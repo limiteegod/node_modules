@@ -29,6 +29,22 @@ DigestUtil.prototype.check = function(headNode, key, bodyStr)
         dec += decipher.final('utf8');
         return dec;
     }
+    else if(headNode.digestType == "md5")
+    {
+        var text = bodyStr + headNode.timestamp + key;
+        //log.info(text);
+        var md5 = self.md5(text);
+        //log.info("client md5:" + md5);
+        //log.info("system md5:" + headNode.digest);
+        if(md5 == headNode.digest)
+        {
+            return bodyStr;
+        }
+        else
+        {
+            return null;
+        }
+    }
     return bodyStr;
 };
 
@@ -46,6 +62,15 @@ DigestUtil.prototype.generate = function(headNode, key, bodyStr)
         var crypted = cipher.update(bodyStr, 'utf8', 'base64');
         crypted += cipher.final('base64');
         return crypted;
+    }
+    else if(headNode.digestType == "md5")
+    {
+        var text = bodyStr + headNode.timestamp + key;
+        //log.info(text);
+        var md5 = self.md5(text);
+        //log.info(md5);
+        headNode.digest = md5;
+        return bodyStr;
     }
     return;
 };

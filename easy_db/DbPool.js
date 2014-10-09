@@ -4,6 +4,7 @@ var MongoClient = require('mongodb').MongoClient;
 var prop = require('./Prop.js');
 var DbConnection = require('./DbConnection.js');
 var log = require('./McpLog.js');
+var ec = require('./ErrCode.js');
 
 var DbPool = function(db){
     var self = this;
