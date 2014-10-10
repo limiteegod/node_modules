@@ -33,6 +33,23 @@ DateUtil.prototype.oracleObj = function(table, obj)
     return newObj;
 };
 
+DateUtil.prototype.mysqlObj = function(table, obj)
+{
+    var self = this;
+    for(var key in obj)
+    {
+        var col = table.colList[key];
+        if(col)
+        {
+            if(col.type == 'date')
+            {
+                console.log(obj[key]);
+                obj[col.name] = moment(obj[key]).format("YYYY-MM-DD HH:mm:ss");
+            }
+        }
+    }
+};
+
 DateUtil.prototype.getCurTime = function()
 {
     var self = this;
