@@ -8,6 +8,7 @@ var DbCurser = function(table, options, baseSql, conditionStr){
     self.baseSql = baseSql;
     self.conditionStr = conditionStr;
     self.options = options;
+    self.parseDate = false;
 };
 
 DbCurser.prototype.limit = function(start, size)
@@ -16,6 +17,12 @@ DbCurser.prototype.limit = function(start, size)
     var sql = " limit " + start + "," + size;
     self.baseSql += sql;
     return self;
+};
+
+DbCurser.prototype.dateToString = function()
+{
+    var self = this;
+    self.parseDate = true;
 };
 
 DbCurser.prototype.sort = function(data)
@@ -57,6 +64,13 @@ DbCurser.prototype.toArray = function(cb)
     log.info(sql);
     var conn = self.table.db.pool.getConn();
     conn.execute(sql, self.options, function(err, data){
+        if(data && self.parseDate)
+        {
+            for(var key in data)
+            {
+                dateUtil.objDateToString(self.table, data[key]);
+            }
+        }
         log.info(data);
         cb(err, data);
     });

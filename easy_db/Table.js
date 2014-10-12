@@ -191,7 +191,25 @@ Table.prototype.save = function(data, options, cb)
             var value = data[key];
             if(typeof value == "string")
             {
-                valueStr += "'" + value + "'";
+                if(col.type == 'date')
+                {
+                    if(self.db.type == prop.dbType.oracle)
+                    {
+                        valueStr += "to_date('" + value + "', 'yyyy-MM-dd HH24:mi:ss')";
+                    }
+                    else if(self.db.type == prop.dbType.mysql)
+                    {
+                        valueStr += dateUtil.toDate(value).valueOf();
+                    }
+                    else
+                    {
+                        valueStr += "'" + value + "'";
+                    }
+                }
+                else
+                {
+                    valueStr += "'" + value + "'";
+                }
             }
             else if(typeof value == 'object')
             {
@@ -456,10 +474,12 @@ Table.prototype.getKvPair = function(colName, op, value)
             var str = '';
             if(self.db.type == prop.dbType.mysql)
             {
-                str += "'" + dateUtil.toString(value) + "'";
+                //mysql 中日期类型直接存储时间戳
+                str += value;
             }
             else if(self.db.type == prop.dbType.oracle)
             {
+                //oracle 中需要用to_date函数进行转换，但是会丢失精度
                 str += "to_date('" + value + "', 'yyyy-MM-dd HH24:mi:ss')";
             }
             exp += str;

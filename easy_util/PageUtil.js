@@ -14,7 +14,9 @@ PageUtil.prototype.parse = function(bodyNode, backBodyNode)
     var limit = bodyNode.limit;
     if(limit == undefined)
     {
-        backBodyNode.limit = 20;
+        if(!backBodyNode.limit) {
+            backBodyNode.limit = 20;
+        }
     }
     else
     {
@@ -23,7 +25,9 @@ PageUtil.prototype.parse = function(bodyNode, backBodyNode)
     var sort = bodyNode.sort;
     if(sort == undefined)
     {
-        backBodyNode.sort = {id:1};
+        if(!backBodyNode.sort) {
+            backBodyNode.sort = {id: 1};
+        }
     }
     else
     {

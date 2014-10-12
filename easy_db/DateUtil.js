@@ -1,6 +1,9 @@
 var moment = require("moment");
 
-var DateUtil = function(){};
+var DateUtil = function(){
+    var self = this;
+    self.default_fmt = 'YYYY-MM-DD HH:mm:ss';
+};
 
 DateUtil.prototype.toString = function(date)
 {
@@ -12,6 +15,12 @@ DateUtil.prototype.oracleToString = function(date)
 {
     var self = this;
     return moment(date).format("YYYY-MM-DD HH:mm:ss");
+};
+
+DateUtil.prototype.toDate = function(str)
+{
+    var self = this;
+    return moment(str, self.default_fmt);
 };
 
 DateUtil.prototype.oracleObj = function(table, obj)
@@ -31,6 +40,28 @@ DateUtil.prototype.oracleObj = function(table, obj)
         }
     }
     return newObj;
+};
+
+/**
+ * 把表table对应的数据的日期转换成字符串
+ * @param table
+ * @param obj
+ */
+DateUtil.prototype.objDateToString = function(table, obj)
+{
+    var self = this;
+    for(var key in obj)
+    {
+        var col = table.colList[key];
+        if(col)
+        {
+            if(col.type == 'date')
+            {
+                console.log(obj[key]);
+                obj[col.name] = moment(obj[key]).format("YYYY-MM-DD HH:mm:ss");
+            }
+        }
+    }
 };
 
 DateUtil.prototype.getCurTime = function()

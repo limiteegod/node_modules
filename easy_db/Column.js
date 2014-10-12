@@ -1,4 +1,5 @@
 var log = require('./McpLog.js');
+var prop = require('./Prop.js');
 
 var Column = function(db, name, type, length, nullable, default_value, primary, auto_increment){
     var self = this;
@@ -92,7 +93,15 @@ Column.prototype.toString = function()
     }
     else
     {
-        var sql = self.name + " " + self.type;
+        var sql = self.name + " ";
+        if(self.type == 'date' && self.db.type == prop.dbType.mysql)
+        {
+            sql += "bigint";
+        }
+        else
+        {
+            sql += self.type;
+        }
         if(self.type != 'date' && self.type != 'bigint' && self.type != 'datetime' && self.type != 'date')
         {
             sql += "(" + self.length + ")";
