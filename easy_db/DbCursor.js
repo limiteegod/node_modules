@@ -9,6 +9,10 @@ var DbCurser = function(table, options, baseSql, conditionStr){
     self.conditionStr = conditionStr;
     self.options = options;
     self.parseDate = false;
+    if(self.conditionStr)
+    {
+        self.baseSql += " where " + self.conditionStr;
+    }
 };
 
 DbCurser.prototype.limit = function(start, size)
@@ -57,10 +61,6 @@ DbCurser.prototype.toArray = function(cb)
 {
     var self = this;
     var sql = self.baseSql;
-    if(self.conditionStr)
-    {
-        sql += " where " + self.conditionStr;
-    }
     log.info(sql);
     var conn = self.table.db.pool.getConn();
     conn.execute(sql, self.options, function(err, data){

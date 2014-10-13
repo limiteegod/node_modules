@@ -120,7 +120,7 @@ Table.prototype.create = function(cb)
  * @param options
  * @param cb
  */
-Table.prototype.findOne = function(condition, fields, options, cb)
+Table.prototype.findOne = function(condition, fields, options, cb, addition)
 {
     var self = this;
     if(self.db.type == prop.dbType.mongodb)
@@ -129,7 +129,12 @@ Table.prototype.findOne = function(condition, fields, options, cb)
     }
     else
     {
-        self.find(condition, fields, options).toArray(function(err, data){
+        var cursor = self.find(condition, fields, options);
+        if(addition.dateToString)
+        {
+            cursor.dateToString();
+        }
+        cursor.toArray(function(err, data){
             if(err){
                 cb(err, null);
             }
