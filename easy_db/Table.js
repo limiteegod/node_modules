@@ -130,7 +130,7 @@ Table.prototype.findOne = function(condition, fields, options, cb, addition)
     else
     {
         var cursor = self.find(condition, fields, options);
-        if(addition.dateToString)
+        if(addition!= undefined && addition.dateToString)
         {
             cursor.dateToString();
         }

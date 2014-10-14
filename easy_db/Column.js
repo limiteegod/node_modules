@@ -94,9 +94,23 @@ Column.prototype.toString = function()
     else
     {
         var sql = self.name + " ";
-        if(self.type == 'date' && self.db.type == prop.dbType.mysql)
+        if(self.type == 'date')
         {
-            sql += "bigint";
+            if(self.db.type == prop.dbType.mysql)
+            {
+                if(self.db.dateToLong)
+                {
+                    sql += "bigint";
+                }
+                else
+                {
+                    sql += "datetime";
+                }
+            }
+            else
+            {
+                sql += 'date';
+            }
         }
         else
         {
