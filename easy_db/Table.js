@@ -204,7 +204,14 @@ Table.prototype.save = function(data, options, cb)
                     }
                     else if(self.db.type == prop.dbType.mysql)
                     {
-                        valueStr += dateUtil.toDate(value).valueOf();
+                        if(self.db.dateToLong)
+                        {
+                            valueStr += dateUtil.toDate(value).valueOf();
+                        }
+                        else
+                        {
+                            valueStr += "'" + value + "'";
+                        }
                     }
                     else
                     {
