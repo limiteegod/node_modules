@@ -484,15 +484,24 @@ Table.prototype.getKvPair = function(colName, op, value)
         else if(col.getType() == 'date')
         {
             var str = '';
-            if(self.db.type == prop.dbType.mysql)
+            if(self.db.type == prop.dbType.oracle)
             {
-                //mysql 中日期类型直接存储时间戳
-                str += value;
-            }
-            else if(self.db.type == prop.dbType.oracle)
-            {
-                //oracle 中需要用to_date函数进行转换，但是会丢失精度
                 str += "to_date('" + value + "', 'yyyy-MM-dd HH24:mi:ss')";
+            }
+            else if(self.db.type == prop.dbType.mysql)
+            {
+                if(self.db.dateToLong)
+                {
+                    str += dateUtil.toDate(value).valueOf();
+                }
+                else
+                {
+                    str += "'" + value + "'";
+                }
+            }
+            else
+            {
+                str += "'" + value + "'";
             }
             exp += str;
         }
