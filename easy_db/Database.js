@@ -96,6 +96,15 @@ Database.prototype.get = function(name)
     return table;
 };
 
+Database.prototype.getConn = function()
+{
+    var self = this;
+    if(self.type == prop.dbType.mongodb)
+    {
+        return self.pool.getConn().conn;
+    }
+};
+
 module.exports = Database;
 
 

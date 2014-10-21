@@ -492,7 +492,14 @@ Table.prototype.getKvPair = function(colName, op, value)
             {
                 if(self.db.dateToLong)
                 {
-                    str += dateUtil.toDate(value).valueOf();
+                    if(typeof value == 'string')
+                    {
+                        str += dateUtil.toDate(value).valueOf();
+                    }
+                    else
+                    {
+                        str += value;
+                    }
                 }
                 else
                 {
