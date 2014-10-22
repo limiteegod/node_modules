@@ -5,7 +5,14 @@ var DateUtil = function(){};
 DateUtil.prototype.toString = function(date)
 {
     var self = this;
-    return moment(date).format("YYYY-MM-DD HH:mm:ss");
+    if(date)
+    {
+        return moment(date).format("YYYY-MM-DD HH:mm:ss");
+    }
+    else
+    {
+        return '';
+    }
 };
 
 DateUtil.prototype.oracleToString = function(date)
