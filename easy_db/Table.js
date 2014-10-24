@@ -162,6 +162,15 @@ Table.prototype.findAndModify = function(query, sort, doc, options, cb)
     }
 };
 
+Table.prototype.findAndRemove = function(query, sort, options, cb)
+{
+    var self = this;
+    if(self.db.type == prop.dbType.mongodb)
+    {
+        self.col.findAndRemove(query, sort, options, cb);
+    }
+};
+
 /**
  * 保存对象
  * @param cb
