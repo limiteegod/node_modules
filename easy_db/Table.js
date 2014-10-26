@@ -160,6 +160,10 @@ Table.prototype.findAndModify = function(query, sort, doc, options, cb)
     {
         self.col.findAndModify(query, sort, doc, options, cb);
     }
+    else
+    {
+        cb("unsorpted");
+    }
 };
 
 Table.prototype.findAndRemove = function(query, sort, options, cb)
@@ -168,6 +172,10 @@ Table.prototype.findAndRemove = function(query, sort, options, cb)
     if(self.db.type == prop.dbType.mongodb)
     {
         self.col.findAndRemove(query, sort, options, cb);
+    }
+    else
+    {
+        cb("unsorpted");
     }
 };
 
