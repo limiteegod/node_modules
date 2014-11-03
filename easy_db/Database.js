@@ -103,6 +103,10 @@ Database.prototype.getConn = function()
     {
         return self.pool.getConn().conn;
     }
+    else
+    {
+        return self.pool.getConn();
+    }
 };
 
 module.exports = Database;

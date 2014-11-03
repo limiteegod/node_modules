@@ -44,6 +44,51 @@ PageUtil.prototype.parse = function(bodyNode, backBodyNode)
     }
 };
 
+PageUtil.prototype.parsePost = function(bodyNode, backBodyNode)
+{
+    var skip = bodyNode.skip;
+    if(skip == undefined)
+    {
+        backBodyNode.skip = 0;
+    }
+    else
+    {
+        backBodyNode.skip = skip;
+    }
+    var limit = bodyNode.limit;
+    if(limit == undefined)
+    {
+        if(!backBodyNode.limit) {
+            backBodyNode.limit = 20;
+        }
+    }
+    else
+    {
+        backBodyNode.limit = limit;
+    }
+    var sort = bodyNode.sort;
+    if(sort == undefined)
+    {
+        if(!backBodyNode.sort) {
+            backBodyNode.sort = {id: 1};
+        }
+    }
+    else
+    {
+        backBodyNode.sort = sort;
+    }
+    var cond = bodyNode.cond;
+    if(cond == undefined)
+    {
+        backBodyNode.cond = {};
+    }
+    else
+    {
+        backBodyNode.cond = cond;
+    }
+}
+
+
 PageUtil.prototype.getDetail = function(skip, limit, count)
 {
     var pi = {};
