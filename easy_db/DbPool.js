@@ -17,10 +17,16 @@ DbPool.prototype.connect = function(cb)
     var self = this;
     if(self.db.type == prop.dbType.mysql)
     {
+        var index = self.conns.length;
         var conn = mysql.createConnection(self.db.config);
         conn.connect(function(err){
-            self.conns[self.conns.length] = new DbConnection(self.db, self, conn);
+            self.conns[index] = new DbConnection(self.db, self, conn);
             cb(err);
+        });
+
+        conn.on("error", function(err) {
+            console.log(err);
+            //self.reCreate(index);
         });
     }
     else if(self.db.type == prop.dbType.oracle)
@@ -40,7 +46,7 @@ DbPool.prototype.connect = function(cb)
     }
     else
     {
-        cb(ec.E9000);
+        cb("unsurpted database type.");
     }
 };
 
@@ -53,5 +59,17 @@ DbPool.prototype.getConn = function(index)
     }
     return self.conns[index];
 };
+
+/*DbPool.prototype.reCreate = function(index)
+{
+    var self = this;
+    if(self.db.type == prop.dbType.mysql)
+    {
+        var conn = mysql.createConnection(self.db.config);
+        conn.connect(function(err){
+            cb(err, null);
+        });
+    }
+}*/
 
 module.exports = DbPool;
