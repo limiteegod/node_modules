@@ -96,6 +96,12 @@ Database.prototype.get = function(name)
     return table;
 };
 
+Database.prototype.getAllTables = function()
+{
+    var self = this;
+    return self.tables;
+};
+
 Database.prototype.getConn = function()
 {
     var self = this;
