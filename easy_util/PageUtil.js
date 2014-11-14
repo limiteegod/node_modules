@@ -42,6 +42,15 @@ PageUtil.prototype.parse = function(bodyNode, backBodyNode)
     {
         backBodyNode.cond = JSON.parse(cond);
     }
+    var add = bodyNode.add;
+    if(add == undefined)
+    {
+        backBodyNode.add = {};
+    }
+    else
+    {
+        backBodyNode.add = JSON.parse(add);
+    }
 };
 
 PageUtil.prototype.parsePost = function(bodyNode, backBodyNode)
@@ -85,6 +94,15 @@ PageUtil.prototype.parsePost = function(bodyNode, backBodyNode)
     else
     {
         backBodyNode.cond = cond;
+    }
+    var add = bodyNode.add;
+    if(add == undefined)
+    {
+        backBodyNode.add = {};
+    }
+    else
+    {
+        backBodyNode.add = add;
     }
 }
 
