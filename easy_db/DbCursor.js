@@ -2,6 +2,8 @@ var dbPool = require('./DbPool.js');
 var dateUtil = require('./DateUtil.js');
 var log = require('./McpLog.js');
 
+var prop = require('./Prop.js');
+
 var DbCurser = function(table, options, baseSql, conditionStr){
     var self = this;
     self.table = table;
@@ -64,15 +66,36 @@ DbCurser.prototype.toArray = function(cb)
     log.info(sql);
     var conn = self.table.db.pool.getConn();
     conn.execute(sql, self.options, function(err, data){
-        if(data && self.parseDate)
+        var backSet = [];
+        if(data)
         {
-            for(var key in data)
+            if(self.table.db.type == prop.dbType.oracle)
+            {
+                for(var key in data)
+                {
+                    var newSet = {};
+                    var set = data[key];
+                    for(var setKey in set)
+                    {
+                        newSet[self.table.nameRelation[setKey]] = set[setKey];
+                    }
+                    backSet[backSet.length] = newSet;
+                }
+            }
+            else
+            {
+                backSet = data;
+            }
+        }
+        if(backSet.length > 0 && self.parseDate)
+        {
+            for(var key in backSet)
             {
                 dateUtil.objDateToString(self.table, data[key]);
             }
         }
-        log.info(data);
-        cb(err, data);
+        log.info(backSet);
+        cb(err, backSet);
     });
 };
 

@@ -9,12 +9,14 @@ var Table = function(db, name, colList){
     self.db = db;
     self.name = name;
     self.colList = new Array();
+    self.nameRelation = {}; //oracle 时，记录字段的对应关系
     for(var key in colList)
     {
         var col = colList[key];
         if(self.db.type == prop.dbType.oracle)
         {
             self.colList[col.getName()] = col;
+            self.nameRelation[col.getName().toUpperCase()] = col.getName();
         }
         else
         {
@@ -498,6 +500,10 @@ Table.prototype.getKvPair = function(colName, op, value)
         {
             exp += value;
         }
+        else if(col.getType() == 'varchar' && self.db.type == prop.dbType.oracle && value.length == 0)
+        {
+            return col.getName() + " is null";
+        }
         else if(col.getType() == 'date')
         {
             var str = '';
@@ -577,10 +583,6 @@ Table.prototype.find = function(data, columns, options)
             if(columns[key] == 1)
             {
                 keyStr += key;
-                if(self.db.type == prop.dbType.oracle)
-                {
-                    keyStr += " as " + key;
-                }
             }
             i++;
         }
