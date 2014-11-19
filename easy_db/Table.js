@@ -577,6 +577,10 @@ Table.prototype.find = function(data, columns, options)
             if(columns[key] == 1)
             {
                 keyStr += key;
+                if(self.db.type == prop.dbType.oracle)
+                {
+                    keyStr += " as " + key;
+                }
             }
             i++;
         }
