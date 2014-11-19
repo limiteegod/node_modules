@@ -20,8 +20,18 @@ var DbCurser = function(table, options, baseSql, conditionStr){
 DbCurser.prototype.limit = function(start, size)
 {
     var self = this;
-    var sql = " limit " + start + "," + size;
-    self.baseSql += sql;
+    if(self.table.db.type == prop.dbType.oracle)
+    {
+        var sql = "SELECT * FROM (SELECT A.*, ROWNUM RN FROM (";
+        sql += self.baseSql;
+        sql += ") A WHERE ROWNUM <= " + (start + size) + ") WHERE RN > " + start;
+        self.baseSql = sql;
+    }
+    else
+    {
+        var sql = " limit " + start + "," + size;
+        self.baseSql += sql;
+    }
     return self;
 };
 
@@ -66,6 +76,7 @@ DbCurser.prototype.toArray = function(cb)
     log.info(sql);
     var conn = self.table.db.pool.getConn();
     conn.execute(sql, self.options, function(err, data){
+        log.info(err);
         var backSet = [];
         if(data)
         {
@@ -91,10 +102,9 @@ DbCurser.prototype.toArray = function(cb)
         {
             for(var key in backSet)
             {
-                dateUtil.objDateToString(self.table, data[key]);
+                dateUtil.objDateToString(self.table, backSet[key]);
             }
         }
-        log.info(backSet);
         cb(err, backSet);
     });
 };
@@ -112,7 +122,14 @@ DbCurser.prototype.count = function(cb)
     conn.execute(sql, self.options, function(err, data){
         if(data && data.length > 0)
         {
-            cb(null, data[0].num);
+            if(self.table.db.type == prop.dbType.oracle)
+            {
+                cb(null, data[0].NUM);
+            }
+            else
+            {
+                cb(null, data[0].num);
+            }
         }
         else
         {

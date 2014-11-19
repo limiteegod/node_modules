@@ -1,3 +1,5 @@
+var prop = require('./Prop.js');
+
 var moment = require("moment");
 
 var DateUtil = function(){
@@ -57,8 +59,14 @@ DateUtil.prototype.objDateToString = function(table, obj)
         {
             if(col.type == 'date')
             {
-                console.log(obj[key]);
-                obj[col.name] = moment(obj[key]).format("YYYY-MM-DD HH:mm:ss");
+                if(table.db.type == prop.dbType.oracle)
+                {
+                    obj[col.name] = moment(obj[key]).subtract("8", "h").format("YYYY-MM-DD HH:mm:ss");
+                }
+                else
+                {
+                    obj[col.name] = moment(obj[key]).format("YYYY-MM-DD HH:mm:ss");
+                }
             }
         }
     }
