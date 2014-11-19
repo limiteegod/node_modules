@@ -14,7 +14,7 @@ var Table = function(db, name, colList){
         var col = colList[key];
         if(self.db.type == prop.dbType.oracle)
         {
-            self.colList[col.getName().toUpperCase()] = col;
+            self.colList[col.getName()] = col;
         }
         else
         {
