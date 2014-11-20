@@ -460,7 +460,15 @@ Table.prototype.condition = function(data, parentKey)
                     {
                         inStr += ",";
                     }
-                    inStr += inList[inListKey];
+                    var inValue = inList[inListKey];
+                    if(typeof inValue == 'string')
+                    {
+                        inStr += "'" + inValue + "'";
+                    }
+                    else
+                    {
+                        inStr += inValue;
+                    }
                     inListCount++;
                 }
                 inStr += ")";
