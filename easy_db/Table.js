@@ -310,7 +310,7 @@ Table.prototype.getUpdateStr = function(data)
                         {
                             pStr += ",";
                         }
-                        pStr += self.getKvPair(setKey, "=", setData[setKey]);
+                        pStr += self.getKvPair(setKey, "=", setData[setKey], true);
                         kCount++;
                     }
                 }
@@ -486,7 +486,7 @@ Table.prototype.condition = function(data, parentKey)
  * @param col
  * @param value
  */
-Table.prototype.getKvPair = function(colName, op, value)
+Table.prototype.getKvPair = function(colName, op, value, fromUpdate)
 {
     var self = this;
     var col = self.colList[colName];
@@ -508,9 +508,16 @@ Table.prototype.getKvPair = function(colName, op, value)
         {
             exp += value;
         }
-        else if(col.getType() == 'varchar' && self.db.type == prop.dbType.oracle && value.length == 0)
+        else if(col.getType() == 'varchar' && self.db.type == prop.dbType.oracle && (!value || value.length == 0))
         {
-            return col.getName() + " is null";
+            if(fromUpdate)
+            {
+                return col.getName() + " " + op + "''";
+            }
+            else
+            {
+                return col.getName() + " is null";
+            }
         }
         else if(col.getType() == 'date')
         {
