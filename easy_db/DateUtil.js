@@ -84,4 +84,5 @@ DateUtil.prototype.getLogTime = function()
     return moment(new Date()).format("YYYY-MM-DD HH:mm:ss") + ",";
 };
 
+
 module.exports = new DateUtil();

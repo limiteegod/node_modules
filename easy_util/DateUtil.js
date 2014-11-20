@@ -69,4 +69,17 @@ DateUtil.prototype.getLogTime = function()
     return moment(new Date()).format("YYYY-MM-DD HH:mm:ss") + ",";
 };
 
+
+DateUtil.prototype.getOldCurTime = function()
+{
+    var self = this;
+    return moment(new Date()).format("YYYY-MM-DDTHH:mm:ss.SSSZZ");
+};
+
+DateUtil.prototype.toOldTime = function(newDateStr)
+{
+    var self = this;
+    return moment(newDateStr, 'YYYY-MM-DD HH:mm:ss').format("YYYY-MM-DDTHH:mm:ss.SSSZZ");
+};
+
 module.exports = new DateUtil();
