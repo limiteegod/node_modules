@@ -535,6 +535,10 @@ Table.prototype.getKvPair = function(colName, op, value)
             }
             exp += str;
         }
+        else if(op == 'in')
+        {
+            exp += value;
+        }
         else
         {
             exp += "'" + value + "'";
