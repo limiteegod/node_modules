@@ -66,9 +66,9 @@ DigestUtil.prototype.generate = function(headNode, key, bodyStr)
     else if(headNode.digestType == "md5")
     {
         var text = bodyStr + headNode.timestamp + key;
-        log.info(text);
+        console.log(text);
         var md5 = self.md5(text);
-        log.info(md5);
+        console.log(md5);
         headNode.digest = md5;
         return bodyStr;
     }
