@@ -12,6 +12,14 @@ var ec = require('./ErrCode.js');
 var DbPool = function(db){
     var self = this;
     self.db = db;
+    if(db.poolSize == undefined)
+    {
+        self.size = 1
+    }
+    else
+    {
+        self.size = db.poolSize;
+    }
     self.conns = [];
 };
 
@@ -19,27 +27,42 @@ DbPool.prototype.connect = function(cb)
 {
     var self = this;
     async.waterfall([
-        //第一步，创建连接
         function(cb)
         {
-            if(self.db.type == prop.dbType.mysql)
+            var array = [];
+            for(var i = 0; i < self.size; i++)
             {
-                var index = self.conns.length;
-                var conn = mysql.createConnection(self.db.config);
-                conn.connect(function(err){
-                    self.conns[index] = new DbConnection(self.db, self, conn);
-                    cb(err);
-                });
-
-                conn.on("error", function(err) {
-                    console.log(err);
-                    //self.reCreate(index);
-                });
+                array[array.length] = i;
             }
-            else if(self.db.type == prop.dbType.oracle)
+            cb(null, array);
+        },
+        //第一步，创建连接
+        function(array, cb)
+        {
+            if(self.db.type == prop.dbType.mysql || self.db.type == prop.dbType.oracle)
             {
-                oracle.connect(self.db.config, function(err, connection) {
-                    self.conns[self.conns.length] = new DbConnection(self.db, self, connection);
+                async.eachSeries(array, function(obj, callback) {
+                    if(self.db.type == prop.dbType.mysql)
+                    {
+                        var index = self.conns.length;
+                        var conn = mysql.createConnection(self.db.config);
+                        conn.connect(function(err){
+                            self.conns[index] = new DbConnection(self.db, self, conn);
+                            callback(err);
+                        });
+
+                        conn.on("error", function(err) {
+                            console.log(err);
+                        });
+                    }
+                    else if(self.db.type == prop.dbType.oracle)
+                    {
+                        oracle.connect(self.db.config, function(err, connection) {
+                            self.conns[self.conns.length] = new DbConnection(self.db, self, connection);
+                            callback(err);
+                        });
+                    }
+                }, function(err){
                     cb(err);
                 });
             }
@@ -72,8 +95,11 @@ DbPool.prototype.getConn = function(index)
     var self = this;
     if(index == undefined)
     {
-        index = 0;
+        var ran = Math.round(Math.random()*100);
+        var index = ran%self.size;
     }
+    log.info("使用索引------------------------------");
+    log.info(index);
     return self.conns[index];
 };
 
