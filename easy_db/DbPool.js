@@ -98,8 +98,6 @@ DbPool.prototype.getConn = function(index)
         var ran = Math.round(Math.random()*100);
         var index = ran%self.size;
     }
-    log.info("使用索引------------------------------");
-    log.info(index);
     return self.conns[index];
 };
 
