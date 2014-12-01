@@ -1,6 +1,9 @@
 var moment = require("moment");
 
-var DateUtil = function(){};
+var DateUtil = function(){
+    var self = this;
+    self.default_fmt = 'YYYY-MM-DD HH:mm:ss';
+};
 
 DateUtil.prototype.toString = function(date)
 {
@@ -80,6 +83,12 @@ DateUtil.prototype.toOldTime = function(newDateStr)
 {
     var self = this;
     return moment(newDateStr, 'YYYY-MM-DD HH:mm:ss').format("YYYY-MM-DDTHH:mm:ss.SSSZZ");
+};
+
+DateUtil.prototype.toDate = function(str)
+{
+    var self = this;
+    return new Date(moment(str, self.default_fmt).valueOf());
 };
 
 module.exports = new DateUtil();
