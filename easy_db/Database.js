@@ -85,12 +85,22 @@ Database.prototype.put = function(table)
     self.tablesByName[table.name] = table;
 };
 
-Database.prototype.get = function(name)
+/**
+ * 当数据库类型时mongodb时，可提供suffix参数
+ * @param name
+ * @param suffix
+ * @returns {*}
+ */
+Database.prototype.get = function(name, suffix)
 {
     var self = this;
     var table = self.tablesByName[name];
     if(self.type == prop.dbType.mongodb)
     {
+        if(suffix != undefined)
+        {
+            name += suffix;
+        }
         table.col = self.pool.getConn().conn.collection(name, []);
     }
     return table;
