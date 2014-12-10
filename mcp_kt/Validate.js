@@ -7,8 +7,6 @@ var game = config.game;
 var esut = require('easy_util');
 var log = esut.log;
 
-var dc = require("mcp_db").dc;
-
 var util = require('mcp_util');
 var mathUtil = util.mathUtil;
 
