@@ -145,8 +145,9 @@ Handle<Value> Check::Count0000(const Arguments& args)
     Local<Object> pObj = Local<Object>::Cast(args[0]);
     Local<String> pNum = pObj->Get(String::NewSymbol("number"))->ToString();
     int length = pNum->Utf8Length();
-    char *pChar = new char[length];
+    char *pChar = new char[length + 1];
     pNum->WriteUtf8(pChar);
+    *(pChar + length) = '\0';
 
     int jCount = 0;
     char *tmp = pChar;
@@ -215,8 +216,9 @@ Handle<Value> Check::Count0001(const Arguments& args)
     Local<Object> pObj = Local<Object>::Cast(args[0]);
     Local<String> pNum = pObj->Get(String::NewSymbol("number"))->ToString();
     int length = pNum->Utf8Length();
-    char *pChar = new char[length];
+    char *pChar = new char[length + 1];
     pNum->WriteUtf8(pChar);
+    *(pChar + length) = '\0';
 
     IntArray* numRedIntArray;   //要算奖的红球号码数组
     IntArray* numBlueIntArray;   //要算奖的蓝球号码数组
@@ -277,8 +279,9 @@ Handle<Value> Check::Count0002(const Arguments& args)
     Local<Object> pObj = Local<Object>::Cast(args[0]);
     Local<String> pNum = pObj->Get(String::NewSymbol("number"))->ToString();
     int length = pNum->Utf8Length();
-    char *pChar = new char[length];
+    char *pChar = new char[length + 1];
     pNum->WriteUtf8(pChar);
+    *(pChar + length) = '\0';
 
     IntArray* numDanRedIntArray;   //要算奖的红球号码(胆)数组
     IntArray* numTuoRedIntArray;   //要算奖的红球号码(拖)数组
