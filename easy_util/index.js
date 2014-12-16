@@ -1,4 +1,4 @@
-var log = require("./Log.js");
+var log = require("./Log4js.js");
 var dateUtil = require("./DateUtil.js");
 var digestUtil = require("./DigestUtil.js");
 var osUtil = require("./OsUtil.js");
