@@ -76,7 +76,7 @@ Validate.prototype.validate0100 = function(order, ticket, cb)
             cb(ec.E2066);
             return;
         }
-        if(!mathUtil.isMinAndMaxBetween(1, 6)){
+        if(!mathUtil.isMinAndMaxBetween(intArray,1, 6)){
             cb(ec.E2066);
             return;
         }
@@ -117,10 +117,10 @@ Validate.prototype.validate0200 = function(order, ticket, cb)
                 break;
             }
         }
-        if(count < 1){
-            cb(ec.E2066);
-            return;
-        }
+    }
+    if(count != items.length){
+        cb(ec.E2066);
+        return;
     }
     if(items.length >5){
         cb(ec.E2071);
@@ -142,6 +142,7 @@ Validate.prototype.validate0300 = function(order, ticket, cb)
     var number = ticket.number;
     var items = number.split(";");
     var array = [111,222,333,444,555,666];
+    var count = 0;
     for(var i = 0 ; i < items.length; i++){
         var reg = /^\d(,\d){2}$/;
         if(!reg.test(items[i]))
@@ -151,17 +152,16 @@ Validate.prototype.validate0300 = function(order, ticket, cb)
         }
         var intArray = mathUtil.getIntArrayFromStrArray(items[i].split(','));
         var temp = intArray[0]*100 + intArray[1]*10 + intArray[2];
-        var count = 0;
         for(var j = 0; j < array.length; j++ ){
             if(temp == array[j]){
                 count ++;
                 break;
             }
         }
-        if(count < 0){
-            cb(ec.E2066);
-            return;
-        }
+    }
+    if(count != items.length){
+        cb(ec.E2071);
+        return;
     }
     if(items.length >5){
         cb(ec.E2071);
@@ -194,6 +194,10 @@ Validate.prototype.validate0401 = function(order, ticket, cb)
             return;
         }
     }
+    if(!mathUtil.isFromMinToMax(mathUtil.getIntArrayFromStrArray(items))){
+        cb(ec.E2066);
+        return;
+    }
     cb(null, items.length);
 }
 
@@ -210,6 +214,7 @@ Validate.prototype.validate0501 = function(order, ticket, cb)
     var number = ticket.number;
     var items = number.split(";");
     var array = [12,13,14,15,16,23,24,25,26,34,35,36,45,46,56];
+    var count = 0;
     for(var i = 0 ; i < items.length; i++){
         var reg = /^\d{2}$/;
         if(!reg.test(items[i]))
@@ -218,17 +223,16 @@ Validate.prototype.validate0501 = function(order, ticket, cb)
             return;
         }
         var value = parseInt(items[i]);
-        var count = 0;
         for(var j = 0; j < array.length; j++){
             if(array[j] == value){
                 count++
                 break;
             }
         }
-        if(count < 1){
-            cb(ec.E2066);
-            return;
-        }
+    }
+    if(count != items.length){
+        cb(ec.E2071);
+        return;
     }
     if(items.length >5){
         cb(ec.E2071);
@@ -264,10 +268,10 @@ Validate.prototype.validate0601 = function(order, ticket, cb)
                 break;
             }
         }
-        if(count < 1){
-            cb(ec.E2066);
-            return;
-        }
+    }
+    if(count != items.length){
+        cb(ec.E2066);
+        return;
     }
     cb(null, items.length);
 }

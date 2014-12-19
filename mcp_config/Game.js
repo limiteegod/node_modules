@@ -51,12 +51,12 @@ var Game = function(){
                         {id:'00', name:'单式'}
                     ]
                 },
-                {id:'03', name:'', price:200, betTypes:
+                {id:'03', name:'三同单选', price:200, betTypes:
                     [
                         {id:'00', name:'单式'}
                     ]
                 },
-                {id:'04', name:'合值', price:200, betTypes:
+                {id:'04', name:'和值', price:200, betTypes:
                     [
                         {id:'01', name:'普通'}
                     ]
@@ -76,7 +76,7 @@ var Game = function(){
                         {id:'00', name:'单式'}
                     ]
                 },
-                {id:'08', name:'三连同通选', price:200, betTypes:
+                {id:'08', name:'三连通选', price:200, betTypes:
                     [
                         {id:'00', name:'单式'}
                     ]

@@ -1043,6 +1043,10 @@ Validate.prototype.validate3000 = function(order, ticket, cb){
             return;
         }
         var intArray = mathUtil.getIntArrayFromStrArray(item.split('|'));
+        if(!mathUtil.isFromMinToMax(intArray)){
+            cb(ec.E2066);
+            return;
+        }
         if (!mathUtil.isMinAndMaxBetween(intArray, 1, 11)) {
             cb(ec.E2066);
             return;
@@ -1070,6 +1074,10 @@ Validate.prototype.validate3001 = function(order, ticket, cb){
         return;
     }
     var intArray = mathUtil.getIntArrayFromStrArray(number.split(','));
+    if(!mathUtil.isFromMinToMax(intArray)){
+        cb(ec.E2066);
+        return;
+    }
     if (!mathUtil.isMinAndMaxBetween(intArray, 1, 11)) {
         cb(ec.E2066);
         return;
@@ -1162,7 +1170,7 @@ Validate.prototype.validate3006 = function(order, ticket, cb){
 Validate.prototype.validate3007 = function(order, ticket, cb) {
     var self = this;
     var number = ticket.number;
-    var reg = /^\d{2}(,\d){0,9}\|\d{2}(,\d{2}){0,9}$/;
+    var reg = /^\d{2}(,\d{2}){0,9}\|\d{2}(,\d{2}){0,9}$/;
     if(!reg.test(number)){
         log.info("正则表达式校验不通过");
         cb(ec.E2066);
@@ -1398,6 +1406,10 @@ Validate.prototype.validate3200 = function(order, ticket, cb){
             return;
         }
         var intArray = mathUtil.getIntArrayFromStrArray(item.split('|'));
+        if(!mathUtil.isFromMinToMax(intArray)){
+            cb(ec.E2066);
+            return;
+        }
         if (!mathUtil.isMinAndMaxBetween(intArray, 1, 11)) {
             cb(ec.E2066);
             return;
@@ -1425,6 +1437,10 @@ Validate.prototype.validate3201 = function(order, ticket, cb){
         return;
     }
     var intArray = mathUtil.getIntArrayFromStrArray(number.split(','));
+    if(!mathUtil.isFromMinToMax(intArray)){
+        cb(ec.E2066);
+        return;
+    }
     if (!mathUtil.isMinAndMaxBetween(intArray, 1, 11)) {
         cb(ec.E2066);
         return;
