@@ -238,7 +238,7 @@ var Game = function(){
                     {id:'01', name:'复式'},
                     {id:'09', name:'全包'},
                 ]},
-                {id:'08', name:'任四', price:200, betTypes:[
+                {id:'08', name:'选四直选', price:200, betTypes:[
                     {id:'00', name:'单式'},
                     {id:'01', name:'复式'}
                 ]},
