@@ -100,6 +100,7 @@ Validate.prototype.validate0200 = function(order, ticket, cb)
     var number = ticket.number;
     var items = number.split(";");
     var array = [112,113,114,115,116,122,223,224,225,226,133,233,334,335,336,144,244,344,445,446,155,255,355,455,556,166,266,366,466,566];
+    var count = 0;
     for(var i = 0 ; i < items.length; i++){
         var reg = /^\d(,\d){2}$/;
         if(!reg.test(items[i]))
@@ -110,7 +111,6 @@ Validate.prototype.validate0200 = function(order, ticket, cb)
         var intArray = mathUtil.getIntArrayFromStrArray(items[i].split(','));
         mathUtil.selectSort(intArray);
         var temp = intArray[0]*100 + intArray[1]*10 + intArray[2];
-        var count = 0;
         for(var j = 0; j < array.length; j++ ){
             if(temp == array[j]){
                 count ++;
@@ -124,7 +124,7 @@ Validate.prototype.validate0200 = function(order, ticket, cb)
     }
     if(items.length >5){
         cb(ec.E2071);
-        return; 
+        return;
     }
     cb(null, items.length);
 }
@@ -253,6 +253,7 @@ Validate.prototype.validate0601 = function(order, ticket, cb)
     var number = ticket.number;
     var items = number.split(";");
     var array = [11,22,33,44,55,66];
+    var count = 0;
     for(var i = 0 ; i < items.length; i++){
         var reg = /^\d{2}$/;
         if(!reg.test(items[i]))
@@ -261,7 +262,6 @@ Validate.prototype.validate0601 = function(order, ticket, cb)
             return;
         }
         var value = parseInt(items[i]);
-        var count = 0;
         for(var j = 0; j < array.length; j++){
             if(array[j] == value){
                 count++
