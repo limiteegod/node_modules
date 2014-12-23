@@ -50,18 +50,34 @@ Table.prototype.getDdl = function()
     var self = this;
     var sql = "create table " + self.name + "(";
     var colList = self.colList;
-    var i = 0;
+    var primaryList = "";
+    var i = 0 ;
     for(var key in colList)
     {
+
         var col = colList[key];
-        if(i > 0)
-        {
-            sql += ",";
+        if(col.isPrimary()){
+            if(primaryList.length > 0){
+                primaryList += "," + col.getName();
+            }else{
+                primaryList += col.getName();
+            }
+        }
+        if(i > 0 ){
+            sql += ", ";
         }
         sql += col.toString();
         i++;
     }
-    sql += ");";
+    if(primaryList != "") {
+        sql += ", ";
+        sql += "PRIMARY KEY (";
+        sql += primaryList;
+        sql += "));";
+    }else{
+        sql += ");";
+    }
+    console.log(sql);
     return sql;
 };
 

@@ -128,10 +128,10 @@ Column.prototype.toString = function()
         {
             sql += " default '" + self.default_value + "'";
         }
-        if(self.primary)
+       /* if(self.primary)
         {
             sql += " primary key";
-        }
+        }*/
         if(self.auto_increment)
         {
             sql += " auto_increment";
