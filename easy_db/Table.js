@@ -25,6 +25,12 @@ var Table = function(db, name, colList){
     }
 };
 
+Table.prototype.getName = function ()
+{
+    var self = this;
+    return self.name;
+}
+
 Table.prototype.traverse = function()
 {
     var self = this;
@@ -396,6 +402,8 @@ Table.prototype.update = function(condition, data, option, cb)
         });
     }
 };
+
+
 
 /**
  * 根据json格式的数据生成查询条件
