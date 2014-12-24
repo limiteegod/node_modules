@@ -205,7 +205,7 @@ Handle<Value> Check::Count0200(const Arguments& args)
 
             IntArray* numArray = new IntArray(3, lotNumChar , len, ',');
             MathUtil::SelectSort(numArray);
-            int hitCount = MathUtil::getHitCount(numArray, self->pDrawNum->getPNum());
+            int hitCount = MathUtil::getHitCountByOrder(numArray, self->pDrawNum->getPNum());
             if(hitCount >= 3){
                 self->gl->appendBonusObj(array, 18, 1);
             }
@@ -329,7 +329,7 @@ Handle<Value> Check::Count0501(const Arguments& args)
         firstArray->modify(0, first);
         secondArray->modify(0, second);
         if(MathUtil::getHitCount(firstArray, prizeArray) >0 && MathUtil::getHitCount(secondArray, prizeArray) > 0){
-            self->gl->appendBonusObj(array, 18, 1);
+            self->gl->appendBonusObj(array, 20, 1);
         }
     }
     delete firstArray;
