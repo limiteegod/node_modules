@@ -91,4 +91,10 @@ DateUtil.prototype.toDate = function(str)
     return new Date(moment(str, self.default_fmt).valueOf());
 };
 
+DateUtil.prototype.toCurrentDate = function()
+{
+    var self = this;
+    return moment(new Date()).format("YYYYMMDD");
+};
+
 module.exports = new DateUtil();

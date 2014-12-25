@@ -51,8 +51,7 @@ var dbs = {
             'user': 'root',
             'password': '123456',
             'port': 3306,
-            'database': 'node_mcp',
-            'multipleStatements':true
+            'database': 'node_mcp'
         },
         type: esdb.prop.dbType.mysql,
         dateToLong: true,
