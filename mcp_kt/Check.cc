@@ -285,7 +285,7 @@ Handle<Value> Check::Count0401(const Arguments& args)
     if(lotNumChar[length-1] == ';'){
         length = length-1;
     }
-    IntArray *numArray = new IntArray(17, pChar, length, ';');
+    IntArray *numArray = new IntArray(17, pChar, length, ',');
     int hezhi = self->pDrawNum->getHeZhi();
     for(int i = 0; i < numArray->length(); i++){
         if( numArray->get(i) == hezhi){
