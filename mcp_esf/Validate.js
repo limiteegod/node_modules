@@ -1406,10 +1406,6 @@ Validate.prototype.validate3200 = function(order, ticket, cb){
             return;
         }
         var intArray = mathUtil.getIntArrayFromStrArray(item.split('|'));
-        if(!mathUtil.isFromMinToMax(intArray)){
-            cb(ec.E2066);
-            return;
-        }
         if (!mathUtil.isMinAndMaxBetween(intArray, 1, 11)) {
             cb(ec.E2066);
             return;

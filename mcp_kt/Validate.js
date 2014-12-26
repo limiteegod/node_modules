@@ -160,7 +160,7 @@ Validate.prototype.validate0300 = function(order, ticket, cb)
         }
     }
     if(count != items.length){
-        cb(ec.E2071);
+        cb(ec.E2066);
         return;
     }
     if(items.length >5){
@@ -231,7 +231,7 @@ Validate.prototype.validate0501 = function(order, ticket, cb)
         }
     }
     if(count != items.length){
-        cb(ec.E2071);
+        cb(ec.E2066);
         return;
     }
     if(items.length >5){

@@ -152,7 +152,12 @@ else if(target == 'run')
         {host:'192.168.11.237', port:9091, method:'POST'},
         {host:'192.168.11.237', port:9092, method:'POST'},
         {host:'192.168.11.237', port:9093, method:'POST'},
-        {host:'192.168.11.237', port:9094, method:'POST'}
+        {host:'192.168.11.237', port:9094, method:'POST'},
+        {host:'192.168.11.235', port:9090, method:'POST'},
+        {host:'192.168.11.235', port:9091, method:'POST'},
+        {host:'192.168.11.235', port:9092, method:'POST'},
+        {host:'192.168.11.235', port:9093, method:'POST'},
+        {host:'192.168.11.235', port:9094, method:'POST'}
     ];
 
     exports.filterPort = 9088;
