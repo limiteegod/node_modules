@@ -1042,7 +1042,7 @@ Validate.prototype.validate3000 = function(order, ticket, cb){
             cb(ec.E2066);
             return;
         }
-        var intArray = mathUtil.getIntArrayFromStrArray(item.split('\\|'));
+        var intArray = mathUtil.getIntArrayFromStrArray(item.split('|'));
         if (!mathUtil.isMinAndMaxBetween(intArray, 1, 11)) {
             cb(ec.E2066);
             return;
@@ -1172,8 +1172,8 @@ Validate.prototype.validate3007 = function(order, ticket, cb) {
         cb(ec.E2066);
         return;
     }
-    var firstArray = mathUtil.getIntArrayFromStrArray(number.split('\\|')[0].split(','));
-    var secondArray = mathUtil.getIntArrayFromStrArray(number.split('\\|')[1].split(','));
+    var firstArray = mathUtil.getIntArrayFromStrArray(number.split('|')[0].split(','));
+    var secondArray = mathUtil.getIntArrayFromStrArray(number.split('|')[1].split(','));
     if(!mathUtil.isFromMinToMax(firstArray)){
         cb(ec.E2066);
         return;
@@ -1401,7 +1401,8 @@ Validate.prototype.validate3200 = function(order, ticket, cb){
             cb(ec.E2066);
             return;
         }
-        var intArray = mathUtil.getIntArrayFromStrArray(item.split('\\|'));
+        var intArray = mathUtil.getIntArrayFromStrArray(item.split('|'));
+        log.error(intArray);
         if (intArray[0] == intArray[1]){
             cb(ec.E2066);
             return;
@@ -1543,9 +1544,9 @@ Validate.prototype.validate3207 = function(order, ticket, cb) {
         cb(ec.E2066);
         return;
     }
-    var firstArray = mathUtil.getIntArrayFromStrArray(number.split('\\|')[0].split(','));
-    var secondArray = mathUtil.getIntArrayFromStrArray(number.split('\\|')[1].split(','));
-    var threeArray = mathUtil.getIntArrayFromStrArray(number.split('\\|')[2].split(','));
+    var firstArray = mathUtil.getIntArrayFromStrArray(number.split('|')[0].split(','));
+    var secondArray = mathUtil.getIntArrayFromStrArray(number.split('|')[1].split(','));
+    var threeArray = mathUtil.getIntArrayFromStrArray(number.split('|')[2].split(','));
     if(!mathUtil.isFromMinToMax(firstArray)){
         cb(ec.E2066);
         return;
