@@ -4,16 +4,14 @@ log4js.configure({
     appenders: [
         { type: 'console' },
         {
-            type: 'file',
-            filename: '/data/mcplog/logs/log',
-            //filename: "blah.log",
-            pattern: "-yyyy-MM-dd",
+            type: 'dateFile',
+            filename: '/data/mcplog/logs/mcplog',
+            pattern: "_yyyy-MM-dd.log",
             maxLogSize: 10240,
-            // "pattern": "-yyyy-MM-dd",
-            alwaysIncludePattern: false,
+            alwaysIncludePattern: true,
             backups: 4,
             category: 'logger'
-        },
+        }
     ],
     replaceConsole: true
 });
