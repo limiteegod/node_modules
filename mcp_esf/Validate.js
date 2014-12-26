@@ -89,7 +89,7 @@ Validate.prototype.validate2100 = function(order, ticket, cb){
         cb(ec.E2071);
         return;
     }
-    cb(null, count);
+    cb(null, iterms.length);
 }
 /**
  * 11选5 任选一复式
@@ -441,7 +441,7 @@ Validate.prototype.validate2402 = function(order, ticket, cb){
         cb(ec.E2066);
         return;
     }
-    if (!mathUtil.isMinAndMaxBetween(intArray, 1, 11)) {
+    if (!mathUtil.isMinAndMaxBetween(danArray, 1, 11)) {
         cb(ec.E2066);
         return;
     }
@@ -555,7 +555,7 @@ Validate.prototype.validate2502 = function(order, ticket, cb){
         cb(ec.E2066);
         return;
     }
-    if (!mathUtil.isMinAndMaxBetween(intArray, 1, 11)) {
+    if (!mathUtil.isMinAndMaxBetween(danArray, 1, 11)) {
         cb(ec.E2066);
         return;
     }
@@ -669,7 +669,7 @@ Validate.prototype.validate2602 = function(order, ticket, cb){
         cb(ec.E2066);
         return;
     }
-    if (!mathUtil.isMinAndMaxBetween(intArray, 1, 11)) {
+    if (!mathUtil.isMinAndMaxBetween(danArray, 1, 11)) {
         cb(ec.E2066);
         return;
     }
@@ -1042,11 +1042,7 @@ Validate.prototype.validate3000 = function(order, ticket, cb){
             cb(ec.E2066);
             return;
         }
-        var intArray = mathUtil.getIntArrayFromStrArray(item.split('|'));
-        if(!mathUtil.isFromMinToMax(intArray)){
-            cb(ec.E2066);
-            return;
-        }
+        var intArray = mathUtil.getIntArrayFromStrArray(item.split('\\|'));
         if (!mathUtil.isMinAndMaxBetween(intArray, 1, 11)) {
             cb(ec.E2066);
             return;
@@ -1170,14 +1166,14 @@ Validate.prototype.validate3006 = function(order, ticket, cb){
 Validate.prototype.validate3007 = function(order, ticket, cb) {
     var self = this;
     var number = ticket.number;
-    var reg = /^\d{2}(,\d{2}){0,9}\|\d{2}(,\d{2}){0,9}$/;
+    var reg = /^\d{2}(,\d{2}){0,10}\|\d{2}(,\d{2}){0,10}$/;
     if(!reg.test(number)){
         log.info("正则表达式校验不通过");
         cb(ec.E2066);
         return;
     }
-    var firstArray = mathUtil.getIntArrayFromStrArray(number.split('|')[0].split(','));
-    var secondArray = mathUtil.getIntArrayFromStrArray(number.split('|')[1].split(','));
+    var firstArray = mathUtil.getIntArrayFromStrArray(number.split('\\|')[0].split(','));
+    var secondArray = mathUtil.getIntArrayFromStrArray(number.split('\\|')[1].split(','));
     if(!mathUtil.isFromMinToMax(firstArray)){
         cb(ec.E2066);
         return;
@@ -1405,7 +1401,19 @@ Validate.prototype.validate3200 = function(order, ticket, cb){
             cb(ec.E2066);
             return;
         }
-        var intArray = mathUtil.getIntArrayFromStrArray(item.split('|'));
+        var intArray = mathUtil.getIntArrayFromStrArray(item.split('\\|'));
+        if (intArray[0] == intArray[1]){
+            cb(ec.E2066);
+            return;
+        }
+        if (intArray[1] == intArray[2]){
+            cb(ec.E2066);
+            return;
+        }
+        if (intArray[0] == intArray[2]){
+            cb(ec.E2066);
+            return;
+        }
         if (!mathUtil.isMinAndMaxBetween(intArray, 1, 11)) {
             cb(ec.E2066);
             return;
@@ -1535,9 +1543,9 @@ Validate.prototype.validate3207 = function(order, ticket, cb) {
         cb(ec.E2066);
         return;
     }
-    var firstArray = mathUtil.getIntArrayFromStrArray(number.split('|')[0].split(','));
-    var secondArray = mathUtil.getIntArrayFromStrArray(number.split('|')[1].split(','));
-    var threeArray = mathUtil.getIntArrayFromStrArray(number.split('|')[2].split(','));
+    var firstArray = mathUtil.getIntArrayFromStrArray(number.split('\\|')[0].split(','));
+    var secondArray = mathUtil.getIntArrayFromStrArray(number.split('\\|')[1].split(','));
+    var threeArray = mathUtil.getIntArrayFromStrArray(number.split('\\|')[2].split(','));
     if(!mathUtil.isFromMinToMax(firstArray)){
         cb(ec.E2066);
         return;
