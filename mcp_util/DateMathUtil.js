@@ -227,7 +227,20 @@ DateUtil.prototype.secondBetween = function secondBetween(DateTwo)
     //计算相差秒数
     var leave3=leave2%(60*1000);      //计算分钟数后剩余的毫秒数
     var seconds=Math.round(leave3/1000);
-    return  days+"天 "+hours+"小时 "+minutes+"分钟"+seconds+"秒";
+    var res="";
+    if(days!=0){
+        res+=days+"天 ";
+    }
+    if(hours!=0){
+        res+=hours+"小时 ";
+    }
+    if(minutes!=0){
+        res+=minutes+"分钟 ";
+    }
+    if(seconds!=0){
+        res+=seconds+"秒";
+    }
+    return  res;
 }
 
 
