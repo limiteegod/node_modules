@@ -141,7 +141,7 @@ else if(target == 'run')
 
     exports.platform.site = {
         hostname: '192.168.222.237',
-        port: 9088,
+        port: 80,
         path: '/mcp-filter/main/interface.htm',
         method: 'POST'
     };

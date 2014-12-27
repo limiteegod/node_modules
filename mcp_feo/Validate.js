@@ -58,6 +58,11 @@ Validate.prototype.validate = function(order, ticket, cb)
             cb(ec.E2066);
             return;
         }
+        //按游戏先做倍数验证
+        if(ticket.multiple > 99){
+            cb(ec.E2066);
+            return;
+        }
         self[name](order, ticket, function(err, count){
             if(err)
             {

@@ -321,6 +321,10 @@ Table.prototype.getUpdateStr = function(data)
                 for(var setKey in setData)
                 {
                     var col = self.colList[setKey];
+                    if(setData[setKey] == undefined){
+                        //如果更新的字段未定义。忽略
+                        continue;
+                    }
                     if(col == undefined)
                     {
                         //如果没有相关的列，则直接忽略
