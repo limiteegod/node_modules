@@ -93,8 +93,9 @@ Handle<Value> Check::SetDrawNum(const Arguments& args)
 
     Handle<String> pStr = args[0]->ToString();
     int length = pStr->Utf8Length();
-    char *pChar = new char[length];
+    char *pChar = new char[length + 1];
     pStr->WriteUtf8(pChar);
+    *(pChar + length) = '\0';
 
     int sepIndex = -1;      //红球和蓝球的分隔符位置
     for(int i = 0; i < length; i++)

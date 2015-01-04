@@ -102,8 +102,10 @@ Handle<Value> Check::SetDrawNum(const Arguments& args)
 
     Handle<String> pStr = args[0]->ToString();
     int length = pStr->Utf8Length();
-    char *pChar = new char[length];
+    char *pChar = new char[length + 1];
     pStr->WriteUtf8(pChar);
+    *(pChar + length) = '\0';
+
     //设置开奖号码的类型信息
     obj->pDrawNumType = new NumType(pChar, length);
     obj->pDrawNum = new DrawNum(pChar, length);
@@ -198,8 +200,9 @@ Handle<Value> Check::Count0000(const Arguments& args)
     Local<Object> pObj = Local<Object>::Cast(args[0]);
     Local<String> pNum = pObj->Get(String::NewSymbol("number"))->ToString();
     int length = pNum->Utf8Length();
-    char *pChar = new char[length];
+    char *pChar = new char[length + 1];
     pNum->WriteUtf8(pChar);
+    *(pChar + length) = '\0';
 
     int jCount = 0;
     char *tmp = pChar;
@@ -282,8 +285,9 @@ Handle<Value> Check::Count0100(const Arguments& args)
         Local<Object> pObj = Local<Object>::Cast(args[0]);
         Local<String> pNum = pObj->Get(String::NewSymbol("number"))->ToString();
         int length = pNum->Utf8Length();
-        char *pChar = new char[length];
+        char *pChar = new char[length + 1];
         pNum->WriteUtf8(pChar);
+        *(pChar + length) = '\0';
 
         int jCount = 0;
         char *tmp = pChar;
@@ -345,8 +349,9 @@ Handle<Value> Check::Count0101(const Arguments& args)
         Local<Object> pObj = Local<Object>::Cast(args[0]);
         Local<String> pNum = pObj->Get(String::NewSymbol("number"))->ToString();
         int length = pNum->Utf8Length();
-        char *pChar = new char[length];
+        char *pChar = new char[length + 1];
         pNum->WriteUtf8(pChar);
+        *(pChar + length) = '\0';
 
         NumType *pNumType = new NumType(pChar, length);
 
@@ -387,8 +392,9 @@ Handle<Value> Check::Count0102(const Arguments& args)
         Local<Object> pObj = Local<Object>::Cast(args[0]);
         Local<String> pNum = pObj->Get(String::NewSymbol("number"))->ToString();
         int length = pNum->Utf8Length();
-        char *pChar = new char[length];
+        char *pChar = new char[length + 1];
         pNum->WriteUtf8(pChar);
+        *(pChar + length) = '\0';
 
         NumType *pDan, *pTuo;
         int pos = 0;
@@ -464,8 +470,9 @@ Handle<Value> Check::Count0200(const Arguments& args)
         Local<Object> pObj = Local<Object>::Cast(args[0]);
         Local<String> pNum = pObj->Get(String::NewSymbol("number"))->ToString();
         int length = pNum->Utf8Length();
-        char *pChar = new char[length];
+        char *pChar = new char[length + 1];
         pNum->WriteUtf8(pChar);
+        *(pChar + length) = '\0';
 
         int jCount = 0;
         char *tmp = pChar;
@@ -527,8 +534,9 @@ Handle<Value> Check::Count0201(const Arguments& args)
         Local<Object> pObj = Local<Object>::Cast(args[0]);
         Local<String> pNum = pObj->Get(String::NewSymbol("number"))->ToString();
         int length = pNum->Utf8Length();
-        char *pChar = new char[length];
+        char *pChar = new char[length + 1];
         pNum->WriteUtf8(pChar);
+        *(pChar + length) = '\0';
 
         NumType *pNumType = new NumType(pChar, length);
 
@@ -570,8 +578,9 @@ Handle<Value> Check::Count0202(const Arguments& args)
         Local<Object> pObj = Local<Object>::Cast(args[0]);
         Local<String> pNum = pObj->Get(String::NewSymbol("number"))->ToString();
         int length = pNum->Utf8Length();
-        char *pChar = new char[length];
+        char *pChar = new char[length + 1];
         pNum->WriteUtf8(pChar);
+        *(pChar + length) = '\0';
 
         NumType *pDan, *pTuo;
         int pos = 0;
@@ -647,8 +656,9 @@ Handle<Value> Check::Count0208(const Arguments& args)
         Local<Object> pObj = Local<Object>::Cast(args[0]);
         Local<String> pNum = pObj->Get(String::NewSymbol("number"))->ToString();
         int length = pNum->Utf8Length();
-        char *pChar = new char[length];
+        char *pChar = new char[length + 1];
         pNum->WriteUtf8(pChar);
+        *(pChar + length) = '\0';
 
         NumType *pDan, *pTuo;
         int pos = 0;
@@ -724,8 +734,9 @@ Handle<Value> Check::Count0300(const Arguments& args)
         Local<Object> pObj = Local<Object>::Cast(args[0]);
         Local<String> pNum = pObj->Get(String::NewSymbol("number"))->ToString();
         int length = pNum->Utf8Length();
-        char *pChar = new char[length];
+        char *pChar = new char[length + 1];
         pNum->WriteUtf8(pChar);
+        *(pChar + length) = '\0';
 
         int jCount = 0;
         char *tmp = pChar;
@@ -787,8 +798,9 @@ Handle<Value> Check::Count0301(const Arguments& args)
         Local<Object> pObj = Local<Object>::Cast(args[0]);
         Local<String> pNum = pObj->Get(String::NewSymbol("number"))->ToString();
         int length = pNum->Utf8Length();
-        char *pChar = new char[length];
+        char *pChar = new char[length + 1];
         pNum->WriteUtf8(pChar);
+        *(pChar + length) = '\0';
 
         NumType *pNumType = new NumType(pChar, length);
 
@@ -830,8 +842,9 @@ Handle<Value> Check::Count0302(const Arguments& args)
         Local<Object> pObj = Local<Object>::Cast(args[0]);
         Local<String> pNum = pObj->Get(String::NewSymbol("number"))->ToString();
         int length = pNum->Utf8Length();
-        char *pChar = new char[length];
+        char *pChar = new char[length + 1];
         pNum->WriteUtf8(pChar);
+        *(pChar + length) = '\0';
 
         NumType *pDan, *pTuo;
         int pos = 0;
@@ -907,8 +920,9 @@ Handle<Value> Check::Count0400(const Arguments& args)
         Local<Object> pObj = Local<Object>::Cast(args[0]);
         Local<String> pNum = pObj->Get(String::NewSymbol("number"))->ToString();
         int length = pNum->Utf8Length();
-        char *pChar = new char[length];
+        char *pChar = new char[length + 1];
         pNum->WriteUtf8(pChar);
+        *(pChar + length) = '\0';
 
         int jCount = 0;
         char *tmp = pChar;
@@ -970,8 +984,9 @@ Handle<Value> Check::Count0401(const Arguments& args)
         Local<Object> pObj = Local<Object>::Cast(args[0]);
         Local<String> pNum = pObj->Get(String::NewSymbol("number"))->ToString();
         int length = pNum->Utf8Length();
-        char *pChar = new char[length];
+        char *pChar = new char[length + 1];
         pNum->WriteUtf8(pChar);
+        *(pChar + length) = '\0';
 
         NumType *pNumType = new NumType(pChar, length);
 
@@ -1013,8 +1028,9 @@ Handle<Value> Check::Count0402(const Arguments& args)
         Local<Object> pObj = Local<Object>::Cast(args[0]);
         Local<String> pNum = pObj->Get(String::NewSymbol("number"))->ToString();
         int length = pNum->Utf8Length();
-        char *pChar = new char[length];
+        char *pChar = new char[length + 1];
         pNum->WriteUtf8(pChar);
+        *(pChar + length) = '\0';
 
         NumType *pDan, *pTuo;
         int pos = 0;
@@ -1090,8 +1106,9 @@ Handle<Value> Check::Count0408(const Arguments& args)
         Local<Object> pObj = Local<Object>::Cast(args[0]);
         Local<String> pNum = pObj->Get(String::NewSymbol("number"))->ToString();
         int length = pNum->Utf8Length();
-        char *pChar = new char[length];
+        char *pChar = new char[length + 1];
         pNum->WriteUtf8(pChar);
+        *(pChar + length) = '\0';
 
         NumType *pDan, *pTuo;
         int pos = 0;
@@ -1165,8 +1182,9 @@ Handle<Value> Check::Count0500(const Arguments& args)
     Local<Object> pObj = Local<Object>::Cast(args[0]);
     Local<String> pNum = pObj->Get(String::NewSymbol("number"))->ToString();
     int length = pNum->Utf8Length();
-    char *pChar = new char[length];
+    char *pChar = new char[length + 1];
     pNum->WriteUtf8(pChar);
+    *(pChar + length) = '\0';
 
     int jCount = 0;
     char *tmp = pChar;
@@ -1223,8 +1241,9 @@ Handle<Value> Check::Count0501(const Arguments& args)
     Local<Object> pObj = Local<Object>::Cast(args[0]);
     Local<String> pNum = pObj->Get(String::NewSymbol("number"))->ToString();
     int length = pNum->Utf8Length();
-    char *pChar = new char[length];
+    char *pChar = new char[length + 1];
     pNum->WriteUtf8(pChar);
+    *(pChar + length) = '\0';
 
     int hitCount = 0;
     ReNumType *pReNumType = new ReNumType(pChar, length);
@@ -1257,8 +1276,9 @@ Handle<Value> Check::Count0600(const Arguments& args)
     Local<Object> pObj = Local<Object>::Cast(args[0]);
     Local<String> pNum = pObj->Get(String::NewSymbol("number"))->ToString();
     int length = pNum->Utf8Length();
-    char *pChar = new char[length];
+    char *pChar = new char[length + 1];
     pNum->WriteUtf8(pChar);
+    *(pChar + length) = '\0';
 
     int jCount = 0;
     char *tmp = pChar;
@@ -1314,8 +1334,9 @@ Handle<Value> Check::Count0601(const Arguments& args)
     Local<Object> pObj = Local<Object>::Cast(args[0]);
     Local<String> pNum = pObj->Get(String::NewSymbol("number"))->ToString();
     int length = pNum->Utf8Length();
-    char *pChar = new char[length];
+    char *pChar = new char[length + 1];
     pNum->WriteUtf8(pChar);
+    *(pChar + length) = '\0';
 
     int hitCount = 0;
     ReNumType *pReNumType = new ReNumType(pChar, length);
@@ -1348,8 +1369,9 @@ Handle<Value> Check::Count0603(const Arguments& args)
     Local<Object> pObj = Local<Object>::Cast(args[0]);
     Local<String> pNum = pObj->Get(String::NewSymbol("number"))->ToString();
     int length = pNum->Utf8Length();
-    char *pChar = new char[length];
+    char *pChar = new char[length + 1];
     pNum->WriteUtf8(pChar);
+    *(pChar + length) = '\0';
 
     bool hit = false;
     int first = MathUtil::CharToInt(self->pDrawNum->getCharAt(MathUtil::StrToInt(pChar, 1) - 1));
@@ -1386,8 +1408,9 @@ Handle<Value> Check::Count0606(const Arguments& args)
     Local<Object> pObj = Local<Object>::Cast(args[0]);
     Local<String> pNum = pObj->Get(String::NewSymbol("number"))->ToString();
     int length = pNum->Utf8Length();
-    char *pChar = new char[length];
+    char *pChar = new char[length + 1];
     pNum->WriteUtf8(pChar);
+    *(pChar + length) = '\0';
 
     bool hit = false;
     int first = MathUtil::CharToInt(self->pDrawNum->getCharAt(MathUtil::StrToInt(pChar, 1) - 1));
@@ -1429,8 +1452,9 @@ Handle<Value> Check::Count0609(const Arguments& args)
     Local<Object> pObj = Local<Object>::Cast(args[0]);
     Local<String> pNum = pObj->Get(String::NewSymbol("number"))->ToString();
     int length = pNum->Utf8Length();
-    char *pChar = new char[length];
+    char *pChar = new char[length + 1];
     pNum->WriteUtf8(pChar);
+    *(pChar + length) = '\0';
 
     NumType *pNumType = new NumType(pChar, length);
     int count = 0;
@@ -1468,8 +1492,9 @@ Handle<Value> Check::Count0700(const Arguments& args)
     Local<Object> pObj = Local<Object>::Cast(args[0]);
     Local<String> pNum = pObj->Get(String::NewSymbol("number"))->ToString();
     int length = pNum->Utf8Length();
-    char *pChar = new char[length];
+    char *pChar = new char[length + 1];
     pNum->WriteUtf8(pChar);
+    *(pChar + length) = '\0';
 
     int jCount = 0;
     char *tmp = pChar;
@@ -1525,8 +1550,9 @@ Handle<Value> Check::Count0701(const Arguments& args)
     Local<Object> pObj = Local<Object>::Cast(args[0]);
     Local<String> pNum = pObj->Get(String::NewSymbol("number"))->ToString();
     int length = pNum->Utf8Length();
-    char *pChar = new char[length];
+    char *pChar = new char[length + 1];
     pNum->WriteUtf8(pChar);
+    *(pChar + length) = '\0';
 
     int hitCount = 0;
     ReNumType *pReNumType = new ReNumType(pChar, length);
@@ -1559,8 +1585,9 @@ Handle<Value> Check::Count0709(const Arguments& args)
     Local<Object> pObj = Local<Object>::Cast(args[0]);
     Local<String> pNum = pObj->Get(String::NewSymbol("number"))->ToString();
     int length = pNum->Utf8Length();
-    char *pChar = new char[length];
+    char *pChar = new char[length + 1];
     pNum->WriteUtf8(pChar);
+    *(pChar + length) = '\0';
 
     NumType *pNumType = new NumType(pChar, length);
     int count = 0;
@@ -1613,8 +1640,9 @@ Handle<Value> Check::Count0800(const Arguments& args)
     Local<Object> pObj = Local<Object>::Cast(args[0]);
     Local<String> pNum = pObj->Get(String::NewSymbol("number"))->ToString();
     int length = pNum->Utf8Length();
-    char *pChar = new char[length];
+    char *pChar = new char[length + 1];
     pNum->WriteUtf8(pChar);
+    *(pChar + length) = '\0';
 
     int jCount = 0;
     char *tmp = pChar;
@@ -1670,8 +1698,9 @@ Handle<Value> Check::Count0801(const Arguments& args)
     Local<Object> pObj = Local<Object>::Cast(args[0]);
     Local<String> pNum = pObj->Get(String::NewSymbol("number"))->ToString();
     int length = pNum->Utf8Length();
-    char *pChar = new char[length];
+    char *pChar = new char[length + 1];
     pNum->WriteUtf8(pChar);
+    *(pChar + length) = '\0';
 
     int hitCount = 0;
     ReNumType *pReNumType = new ReNumType(pChar, length);
@@ -1704,8 +1733,9 @@ Handle<Value> Check::Count0900(const Arguments& args)
     Local<Object> pObj = Local<Object>::Cast(args[0]);
     Local<String> pNum = pObj->Get(String::NewSymbol("number"))->ToString();
     int length = pNum->Utf8Length();
-    char *pChar = new char[length];
+    char *pChar = new char[length + 1];
     pNum->WriteUtf8(pChar);
+    *(pChar + length) = '\0';
 
     int jCount = 0;
     char *tmp = pChar;
@@ -1763,8 +1793,9 @@ Handle<Value> Check::Count0901(const Arguments& args)
     Local<Object> pObj = Local<Object>::Cast(args[0]);
     Local<String> pNum = pObj->Get(String::NewSymbol("number"))->ToString();
     int length = pNum->Utf8Length();
-    char *pChar = new char[length];
+    char *pChar = new char[length + 1];
     pNum->WriteUtf8(pChar);
+    *(pChar + length) = '\0';
 
     int hitCount = 0;
     ReNumType *pReNumType = new ReNumType(pChar, length);
@@ -1799,8 +1830,9 @@ Handle<Value> Check::Count0902(const Arguments& args)
     Local<Object> pObj = Local<Object>::Cast(args[0]);
     Local<String> pNum = pObj->Get(String::NewSymbol("number"))->ToString();
     int length = pNum->Utf8Length();
-    char *pChar = new char[length];
+    char *pChar = new char[length + 1];
     pNum->WriteUtf8(pChar);
+    *(pChar + length) = '\0';
 
     int hitCount = 0;
     ReNumType *pReNumType = new ReNumType(pChar, length);
