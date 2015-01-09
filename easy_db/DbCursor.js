@@ -76,7 +76,10 @@ DbCurser.prototype.toArray = function(cb)
     log.info(sql);
     var conn = self.table.db.pool.getConn();
     conn.execute(sql, self.options, function(err, data){
-        log.info(err);
+        if(err)
+        {
+            log.info(err);
+        }
         var backSet = [];
         if(data)
         {

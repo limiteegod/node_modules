@@ -11,7 +11,7 @@ McpLog.prototype.info = function(data)
     var self = this;
     if(self.showLog)
     {
-        console.log(dateUtil.getLogTime(), data);
+        console.log(data);
     }
 };
 
