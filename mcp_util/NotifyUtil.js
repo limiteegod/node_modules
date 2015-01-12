@@ -13,6 +13,7 @@ var NotifyUtil = function(){};
 
 NotifyUtil.prototype.send = function(options, digestType, userKey, cmd, body, cb)
 {
+    log.info(options);
     body.uniqueId = digestUtil.createUUID();
     var bodyStr = JSON.stringify(body);
     var head = {digest:"", digestType:digestType, cmd:cmd};
@@ -23,7 +24,6 @@ NotifyUtil.prototype.send = function(options, digestType, userKey, cmd, body, cb
         encodedBody = digestUtil.generate(head, userKey, bodyStr);
     }
     var msgJson = {head:head, body:encodedBody};
-    log.info(msgJson);
     var msgToSend = JSON.stringify(msgJson);
     var post_data  = querystring.stringify({
         message:msgToSend
@@ -33,6 +33,7 @@ NotifyUtil.prototype.send = function(options, digestType, userKey, cmd, body, cb
         'Content-Length':post_data.length
     };
     options.headers = headers;
+    var backCalled = false;
     var req = http.request(options, function(res) {
         res.setEncoding('utf8');
         var data = '';
@@ -50,14 +51,20 @@ NotifyUtil.prototype.send = function(options, digestType, userKey, cmd, body, cb
             {
                 backNode = {};
             }
-            cb(null, backNode);
+            if(!backCalled)
+            {
+                cb(null, backNode);
+                backCalled = true;
+            }
         });
     });
-    req.setTimeout(20000, function(){
-        cb(new Error("time out"), null);
-    });
+    req.setTimeout(20000);
     req.on('error', function(e) {
-        cb(e, null);
+        if(!backCalled)
+        {
+            cb(e, null);
+            backCalled = true;
+        }
     });
     req.write(post_data, "utf8");
     req.end();
