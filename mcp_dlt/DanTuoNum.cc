@@ -2,7 +2,21 @@
 
 DanTuoNum::DanTuoNum(char *pNum, int len)
 {
-       char *lotNumChar = pNum;
+    int i = 0;
+    int sepIndex = -1;
+    while(i < len)
+    {
+        char c = *(pNum + i);
+        if(c == '|')
+        {
+            sepIndex = i;
+            break;
+        }
+        i++;
+    }
+    this->initRedArray(pNum, sepIndex);
+    this->initBlueArray(pNum + sepIndex + 1, len - (sepIndex + 1));
+       /*char *lotNumChar = pNum;
        bool preFlag = true;
        int preDanFlag = 0;
        int afterDanFlag = 0;
@@ -51,9 +65,60 @@ DanTuoNum::DanTuoNum(char *pNum, int len)
          this->afterDanArray = ia2;
          IntArray* tuo2 = new IntArray(30, lotNumChar, acount, ',');
          this->afterTuoArray = tuo2;
-       }
+       }*/
 }
 
+void DanTuoNum::initRedArray(char *pNum, int len)
+{
+    int i = 0;
+    int sepIndex = -1;
+    while(i < len)
+    {
+        char c = *(pNum + i);
+        if(c == '$')
+        {
+            sepIndex = i;
+            break;
+        }
+        i++;
+    }
+    if(sepIndex > -1)
+    {
+        this->preDanArray = new IntArray(35, pNum, sepIndex, ',');
+        this->preTuoArray = new IntArray(35, pNum + sepIndex + 1, len - (sepIndex + 1), ',');
+    }
+    else
+    {
+        this->preDanArray = new IntArray(35, pNum, len, ',');
+        this->preTuoArray = new IntArray(0);
+    }
+}
+
+void DanTuoNum::initBlueArray(char *pNum, int len)
+{
+    int i = 0;
+    int sepIndex = -1;
+    while(i < len)
+    {
+        char c = *(pNum + i);
+        if(c == '$')
+        {
+            sepIndex = i;
+            break;
+        }
+        i++;
+    }
+    if(sepIndex > -1)
+    {
+        this->afterDanArray = new IntArray(12, pNum, sepIndex, ',');
+        this->afterTuoArray = new IntArray(12, pNum + sepIndex + 1, len - (sepIndex + 1), ',');
+    }
+    else
+    {
+        this->afterDanArray = new IntArray(12, pNum, len, ',');
+        this->afterTuoArray = new IntArray(0);
+    }
+}
 
 IntArray* DanTuoNum::getPreDanArray(){
     return this->preDanArray;

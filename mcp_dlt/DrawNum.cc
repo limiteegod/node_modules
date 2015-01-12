@@ -1,28 +1,30 @@
 #include "DrawNum.h"
 
-
+/**
+ * 大乐透的红球与篮球之间用|分隔
+ */
 DrawNum::DrawNum(char *pNum, int len)
 {
-    int currlen = 0 ; //每个单式的长度
-    char *lotNumChar = pNum;
-    for(int ch = 0; ch < len ; ch++ ){
-        char temp = lotNumChar[ch];
-        if(temp == '|'){
-            this->preArray = new IntArray(35, lotNumChar, currlen, ',');
-            if(ch < len -1){
-                lotNumChar = pNum + ch + 1;
-            }
-            currlen = 0;
-        }else if(temp == ';' || ch == len -1 ){ //单式结束或者真正结束了
-            if(ch == len -1 && temp != ';')
-            currlen ++;
-
-            this->afterArray = new IntArray(12, lotNumChar, currlen, ',');
-            currlen = 0;
-        }else{
-            currlen ++;
+    int i = 0;
+    int sepIndex = -1;
+    while(i < len)
+    {
+        char c = *(pNum + i);
+        if(c == '|')
+        {
+            sepIndex = i;
+            break;
         }
+        i++;
     }
+    this->preArray = new IntArray(35, pNum, sepIndex, ',');
+    //蓝球号码的长度
+    int afterLen = len - (sepIndex + 1);
+    if(*(pNum + len - 1) == ';')    //如果结束符是;,则长度还需要-1
+    {
+        afterLen--;
+    }
+    this->afterArray = new IntArray(12, pNum + sepIndex + 1, afterLen, ',');
 }
 
 IntArray* DrawNum::getPreArray(){

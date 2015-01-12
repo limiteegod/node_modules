@@ -29,12 +29,10 @@ class Check:public node::ObjectWrap {
         static v8::Handle<v8::Value> Count0500(const v8::Arguments& args);
         static v8::Handle<v8::Value> Count0501(const v8::Arguments& args);
         static v8::Handle<v8::Value> Count0502(const v8::Arguments& args);
-        int getRedHitCount(IntArray *lotArray, IntArray *prizeArray);
-        int getBlueHitCount(IntArray *lotArray, IntArray *prizeArray);
 
         GradeLevel* gl;
         DrawNum* pDrawNum;
-        int bounsRule[13][3];
+        int bonusRule[13][3];
 };
 
 #endif
