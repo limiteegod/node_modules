@@ -1,7 +1,7 @@
 var Game = function(){
     var self = this;
     self.info = [
-        {id:'F01', name:'双色球', playTypes:
+        {id:'F01', type:1, name:'双色球', playTypes:
             [
                 {id:'00', name:'普通', price:200, betTypes:
                     [
@@ -12,7 +12,7 @@ var Game = function(){
                 }
             ]
         },
-        {id:'F02', name:'福彩3d', playTypes:
+        {id:'F02', type:1, name:'福彩3d', playTypes:
             [
                 {id:'01', name:'直选', price:200, betTypes:
                     [
@@ -38,12 +38,11 @@ var Game = function(){
                 }
             ]
         },
-        {id:'F04', name:'快3', playTypes:
+        {id:'F04', type:2, name:'快3', playTypes:
             [
                 {id:'01', name:'三不同', price:200, betTypes:
                     [
-                        {id:'00', name:'单式'},
-
+                        {id:'00', name:'单式'}
                     ]
                 },
                 {id:'02', name:'二同单选', price:200, betTypes:
@@ -83,7 +82,7 @@ var Game = function(){
                 }
             ]
         },
-        {id:'T01', name: '大乐透', playTypes:
+        {id:'T01', type:1, name: '大乐透', playTypes:
             [
                 {id:'00', name:'标准', price:200, betTypes:
                     [
@@ -101,7 +100,7 @@ var Game = function(){
                 }
             ]
         },
-        {id:'T05', name:'11选5', playTypes:
+        {id:'T05', type:2, name:'11选5', playTypes:
             [
                 {id:'21', name:'任选一', price:200, betTypes:
                     [
@@ -195,7 +194,7 @@ var Game = function(){
                 }
             ]
         },
-        {id:'T06', name:'新快赢481', playTypes:
+        {id:'T06', type:2, name:'新快赢481', playTypes:
             [
                 {id:'00', name:'组选', price:200, betTypes:[
                     {id:'00', name:'单式'}
@@ -236,7 +235,7 @@ var Game = function(){
                 {id:'07', name:'任三', price:200, betTypes:[
                     {id:'00', name:'单式'},
                     {id:'01', name:'复式'},
-                    {id:'09', name:'全包'},
+                    {id:'09', name:'全包'}
                 ]},
                 {id:'08', name:'选四直选', price:200, betTypes:[
                     {id:'00', name:'单式'},
@@ -249,7 +248,7 @@ var Game = function(){
                 ]}
             ]
         },
-        {id:'T51', name:'竞彩足球', playTypes:
+        {id:'T51', type:3, name:'竞彩足球', playTypes:
             [
                 {id:'01', name:'让球胜平负', price:200, betTypes:[]},
                 {id:'02', name:'胜平负', price:200, betTypes:[]}
