@@ -97,4 +97,11 @@ DateUtil.prototype.toCurrentDate = function()
     return moment(new Date()).format("YYYYMMDD");
 };
 
+DateUtil.prototype.toCurrentStamp = function()
+{
+    var self = this;
+    return moment(new Date()).format("YYYYMMDDHHmmss");
+};
+
+
 module.exports = new DateUtil();
