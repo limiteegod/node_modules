@@ -109,6 +109,10 @@ Validate.prototype.validate0200 = function(order, ticket, cb)
             return;
         }
         var intArray = mathUtil.getIntArrayFromStrArray(items[i].split(','));
+        if(!mathUtil.isFromMinToMaxCanEqual(intArray)){
+            cb(ec.E2066);
+            return;
+        }
         mathUtil.selectSort(intArray);
         var temp = intArray[0]*100 + intArray[1]*10 + intArray[2];
         for(var j = 0; j < array.length; j++ ){
