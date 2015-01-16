@@ -7,11 +7,13 @@ var AccountConfig = function(){
                     {id:'0100', code:'charge', name:'充值'},
                     {id:'0300', code:'print', name:'出票'},
                     {id:'0500', code:'prize', name:'返奖'},
-                    {id:'0700', code:'refund', name:'退款'}
+                    {id:'0700', code:'refund', name:'退款'},
+                    {id:'0800', code:'correction', name:'冲正'}
                 ]},
                 {id:'1', code:'out', name:'支出', subjects:[
                     {id:'0202', code:'lot', name:'投注'},
-                    {id:'0402', code:'payPrize', name:'支付奖金'}
+                    {id:'0402', code:'payPrize', name:'支付奖金'},
+                    {id:'0602', code:'outCorrection', name:'冲正'}
                 ]}]
             }
         ]}
