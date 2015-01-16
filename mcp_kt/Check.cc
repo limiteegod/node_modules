@@ -95,8 +95,9 @@ Handle<Value> Check::SetDrawNum(const Arguments& args)
 
     Handle<String> pStr = args[0]->ToString();
     int length = pStr->Utf8Length();
-    char *pChar = new char[length];
+    char *pChar = new char[length + 1];
     pStr->WriteUtf8(pChar);
+    *(pChar + length) = '\0';
     //设置开奖号码的类型信息
     obj->pDrawNum = new DrawNum(pChar, length);
     delete[] pChar;
@@ -147,8 +148,9 @@ Handle<Value> Check::Count0100(const Arguments& args)
     Local<Object> pObj = Local<Object>::Cast(args[0]);
     Local<String> pNum = pObj->Get(String::NewSymbol("number"))->ToString();
     int length = pNum->Utf8Length();
-    char *pChar = new char[length];
+    char *pChar = new char[length + 1];
     pNum->WriteUtf8(pChar);
+    *(pChar + length) = '\0';
 
     int len = 0 ; //每个单式的长度
     char *lotNumChar = pChar;
@@ -191,8 +193,9 @@ Handle<Value> Check::Count0200(const Arguments& args)
     Local<Object> pObj = Local<Object>::Cast(args[0]);
     Local<String> pNum = pObj->Get(String::NewSymbol("number"))->ToString();
     int length = pNum->Utf8Length();
-    char *pChar = new char[length];
+    char *pChar = new char[length + 1];
     pNum->WriteUtf8(pChar);
+    *(pChar + length) = '\0';
 
     int len = 0 ; //每个单式的长度
     char *lotNumChar = pChar;
@@ -234,8 +237,9 @@ Handle<Value> Check::Count0300(const Arguments& args)
     Local<Object> pObj = Local<Object>::Cast(args[0]);
     Local<String> pNum = pObj->Get(String::NewSymbol("number"))->ToString();
     int length = pNum->Utf8Length();
-    char *pChar = new char[length];
+    char *pChar = new char[length + 1];
     pNum->WriteUtf8(pChar);
+    *(pChar + length) = '\0';
 
     int len = 0 ; //每个单式的长度
     char *lotNumChar = pChar;
@@ -277,8 +281,9 @@ Handle<Value> Check::Count0401(const Arguments& args)
     Local<Object> pObj = Local<Object>::Cast(args[0]);
     Local<String> pNum = pObj->Get(String::NewSymbol("number"))->ToString();
     int length = pNum->Utf8Length();
-    char *pChar = new char[length];
+    char *pChar = new char[length + 1];
     pNum->WriteUtf8(pChar);
+    *(pChar + length) = '\0';
 
     char *lotNumChar = pChar;
     //如果末尾包含了分号
@@ -310,8 +315,9 @@ Handle<Value> Check::Count0501(const Arguments& args)
     Local<Object> pObj = Local<Object>::Cast(args[0]);
     Local<String> pNum = pObj->Get(String::NewSymbol("number"))->ToString();
     int length = pNum->Utf8Length();
-    char *pChar = new char[length];
+    char *pChar = new char[length + 1];
     pNum->WriteUtf8(pChar);
+    *(pChar + length) = '\0';
 
     char *lotNumChar = pChar;
     //如果末尾包含了分号
@@ -352,8 +358,9 @@ Handle<Value> Check::Count0601(const Arguments& args)
     Local<Object> pObj = Local<Object>::Cast(args[0]);
     Local<String> pNum = pObj->Get(String::NewSymbol("number"))->ToString();
     int length = pNum->Utf8Length();
-    char *pChar = new char[length];
+    char *pChar = new char[length + 1];
     pNum->WriteUtf8(pChar);
+    *(pChar + length) = '\0';
 
     char *lotNumChar = pChar;
     //如果末尾包含了分号
@@ -390,8 +397,9 @@ Handle<Value> Check::Count0700(const Arguments& args)
     Local<Object> pObj = Local<Object>::Cast(args[0]);
     Local<String> pNum = pObj->Get(String::NewSymbol("number"))->ToString();
     int length = pNum->Utf8Length();
-    char *pChar = new char[length];
+    char *pChar = new char[length + 1];
     pNum->WriteUtf8(pChar);
+    *(pChar + length) = '\0';
 
     char *lotNumChar = pChar;
     //如果末尾包含了分号
@@ -422,8 +430,9 @@ Handle<Value> Check::Count0800(const Arguments& args)
     Local<Object> pObj = Local<Object>::Cast(args[0]);
     Local<String> pNum = pObj->Get(String::NewSymbol("number"))->ToString();
     int length = pNum->Utf8Length();
-    char *pChar = new char[length];
+    char *pChar = new char[length + 1];
     pNum->WriteUtf8(pChar);
+    *(pChar + length) = '\0';
 
     char *lotNumChar = pChar;
     //如果末尾包含了分号
