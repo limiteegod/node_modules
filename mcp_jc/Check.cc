@@ -5,6 +5,7 @@
 #include "Check.h"
 #include "VsString.h"
 #include "VsJson.h"
+#include "VsUtil.h"
 
 using namespace v8;
 
@@ -17,11 +18,14 @@ Check::Check()
     struct VsString* jsonStr = vs_json_object_to_string(this->bunchMap);
     vs_string_print(jsonStr);
     vs_string_destroy(jsonStr);
+
+    this->drawMap = vs_json_object_init("{}");
 }
 
 Check::~Check()
 {
     vs_json_object_destroy(this->bunchMap);
+    vs_json_object_destroy(this->drawMap);
 }
 
 void Check::initBunchMap()
@@ -92,7 +96,8 @@ void Check::Init()
     Local<FunctionTemplate> tpl = FunctionTemplate::New(New);
     tpl->SetClassName(String::NewSymbol("Check"));
     tpl->InstanceTemplate()->SetInternalFieldCount(1);
-    tpl->PrototypeTemplate()->Set(String::NewSymbol("count0100"), FunctionTemplate::New(Count0100)->GetFunction());
+    tpl->PrototypeTemplate()->Set(String::NewSymbol("count"), FunctionTemplate::New(Count)->GetFunction());
+    tpl->PrototypeTemplate()->Set(String::NewSymbol("setDrawNumber"), FunctionTemplate::New(SetDrawNumber)->GetFunction());
     constructor = Persistent<Function>::New(tpl->GetFunction());
 }
 
@@ -205,9 +210,73 @@ struct VsJsonObject* Check::getNumberObj(struct VsString* number, struct VsStrin
 }
 
 /**
+ * 设置开奖号码，当nodejs层发现场次还未设置开奖号码，则会调用此方法进行设置
+ */
+Handle<Value> Check::SetDrawNumber(const Arguments& args)
+{
+    HandleScope scope;
+    Check *self = ObjectWrap::Unwrap<Check>(args.This());
+    Local<Object> pObj = Local<Object>::Cast(args[0]);
+
+    //获得场次
+    Local<String> code = pObj->Get(String::NewSymbol("code"))->ToString();
+    int length = code->Utf8Length();
+    struct VsString* codeStr = vs_string_init(NULL, -1L, length + 1);
+    code->WriteUtf8(codeStr->pt);
+    codeStr->length = length;
+    *(codeStr->pt + codeStr->length) = '\0';
+
+    //获得开奖号码
+    Local<String> pNum = pObj->Get(String::NewSymbol("number"))->ToString();
+    length = pNum->Utf8Length();
+    struct VsString* str = vs_string_init(NULL, -1L, length + 1);
+    pNum->WriteUtf8(str->pt);
+    str->length = length;
+    *(str->pt + str->length) = '\0';
+
+    struct VsJsonValue* matchValue = vs_json_value_init("{}");
+
+    struct VsStringList* numList = vs_string_split(str, ',');
+    struct VsString* halfStr = vs_string_list_get(numList, 0);
+    struct VsStringList* halfStrList = vs_string_split(halfStr, ':');
+    struct VsString* endStr = vs_string_list_get(numList, 1);
+    struct VsStringList* endStrList = vs_string_split(endStr, ':');
+    struct VsString* rangStr = vs_string_list_get(numList, 2);
+
+    long rang = vs_util_str_to_long(rangStr);   //让球数
+    long hostEnd = vs_util_str_to_long(vs_string_list_get(endStrList, 0));   //主队进球数目
+    long guestEnd = vs_util_str_to_long(vs_string_list_get(endStrList, 1));   //客队进球数目
+    if(hostEnd > guestEnd)
+    {
+        vs_json_object_set_string(matchValue->objectValue, "02", "3");
+    }
+    else if(hostEnd == guestEnd)
+    {
+        vs_json_object_set_string(matchValue->objectValue, "02", "1");
+    }
+    else
+    {
+        vs_json_object_set_string(matchValue->objectValue, "02", "0");
+    }
+    vs_string_print(str);
+    vs_json_object_set(self->drawMap, codeStr, matchValue);
+
+    struct VsString* jsonStr = vs_json_object_to_string(self->drawMap);
+    vs_string_print(jsonStr);
+    vs_string_destroy(jsonStr);
+
+    vs_string_list_destroy(halfStrList);
+    vs_string_list_destroy(endStrList);
+    vs_string_list_destroy(numList);
+    vs_string_destroy(codeStr);
+    vs_string_destroy(str);
+    return scope.Close(Undefined());
+}
+
+/**
  * 让球胜平负
  */
-Handle<Value> Check::Count0100(const Arguments& args)
+Handle<Value> Check::Count(const Arguments& args)
 {
     HandleScope scope;
     Check *self = ObjectWrap::Unwrap<Check>(args.This());
