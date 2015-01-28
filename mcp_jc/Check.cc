@@ -361,7 +361,7 @@ Handle<Value> Check::Count(const Arguments& args)
                     }
                 }
                 count += curCount;
-                bonus += totalMultiplier;
+                bonus += (long)totalMultiplier;
                 //printf("the multiple is:%lf.\n", totalMultiplier);
             }
             if(bonus > 0)   //中奖，生成奖级信息
