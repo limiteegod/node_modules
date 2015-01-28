@@ -144,6 +144,12 @@ void vs_string_append(VsString* str, const char *src, int length);
 void vs_string_append(VsString* dest, VsString* src);
 
 /**
+ * 获得指定索引的字符，
+ * 如果索引不存在，则返回'\0'
+ */
+char vs_string_char_at(struct VsString* src, long index);
+
+/**
  * 打印目标字符串
  * @param str
  */

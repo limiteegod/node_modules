@@ -7,6 +7,7 @@
             "../core/VsString.cc",
             "../core/IntArray.cc",
             "../core/MathUtil.cc",
+            "../core/VsJsonUtil.cc",
             "Check.cc"
         ],
         "include_dirs":["../core"]

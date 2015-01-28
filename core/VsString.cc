@@ -149,6 +149,22 @@ void vs_string_append(VsString* dest, VsString* src)
     vs_string_append(dest, src->pt, src->length);
 }
 
+/**
+ * 获得指定索引的字符，
+ * 如果索引不存在，则返回'\0'
+ */
+char vs_string_char_at(struct VsString* src, long index)
+{
+	if(index >= 0 && index < src->length)
+	{
+		return *(src->pt + index);
+	}
+	else
+	{
+		return '\0';
+	}
+}
+
 void string_copy(const char *src, char *dest)
 {
     int i = 0;

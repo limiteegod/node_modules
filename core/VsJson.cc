@@ -508,6 +508,31 @@ struct VsJsonArray* vs_json_array_init(struct VsString* str) {
 }
 
 /**
+ * 初始化json数组
+ */
+struct VsJsonArray* vs_json_array_init(const char* str)
+{
+	struct VsString* arrayStr = vs_string_init(str);
+	struct VsJsonArray* array = vs_json_array_init(arrayStr);
+	vs_string_destroy(arrayStr);
+	return array;
+}
+
+/**
+ * 初始化json数组
+ */
+struct VsJsonArray* vs_json_array_init(long* array, long length)
+{
+	struct VsJsonArray* jsonArray = vs_json_array_init("[]");
+	for(long i = 0; i < length; i++)
+	{
+		struct VsJsonValue* value = vs_json_value_init(*(array + i));
+		vs_json_array_append(jsonArray, value);
+	}
+	return jsonArray;
+}
+
+/**
  * 在json数组后面添加value
  */
 void vs_json_array_append(struct VsJsonArray* array,
@@ -867,6 +892,17 @@ struct VsJsonValue* vs_json_object_get(struct VsJsonObject* object,
 }
 
 /**
+ * 获得json的值
+ */
+struct VsJsonValue* vs_json_object_get(struct VsJsonObject* object, const char* key)
+{
+	struct VsString* strKey = vs_string_init(key);
+	struct VsJsonValue* value = vs_json_object_get(object, strKey);
+	vs_string_destroy(strKey);
+	return value;
+}
+
+/**
  * 设置json的值
  */
 void vs_json_object_set(struct VsJsonObject* object, struct VsString* key,
@@ -1041,6 +1077,18 @@ struct VsJsonValue* vs_json_value_init_null() {
 	struct VsJsonValue* jsonValue = (struct VsJsonValue*) malloc(
 			sizeof(VsJsonValue));
 	jsonValue->type = VS_JSON_VALUE_TYPE_NULL;
+	return jsonValue;
+}
+
+/**
+ * 初始化一个json的值
+ */
+struct VsJsonValue* vs_json_value_init(struct VsJsonArray* array)
+{
+	struct VsJsonValue* jsonValue = (struct VsJsonValue*) malloc(
+			sizeof(VsJsonValue));
+	jsonValue->type = VS_JSON_VALUE_TYPE_ARRAY;
+	jsonValue->arrayValue = array;
 	return jsonValue;
 }
 

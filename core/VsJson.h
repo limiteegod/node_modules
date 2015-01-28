@@ -119,6 +119,11 @@ struct VsJsonValue* vs_json_object_get_by_path(struct VsJsonObject* object, cons
 struct VsJsonValue* vs_json_object_get(struct VsJsonObject* object, struct VsString* key);
 
 /**
+ * 获得json的值
+ */
+struct VsJsonValue* vs_json_object_get(struct VsJsonObject* object, const char* key);
+
+/**
  * 设置json的值
  */
 void vs_json_object_set(struct VsJsonObject* object, struct VsString* key, struct VsJsonValue* value);
@@ -270,6 +275,11 @@ struct VsJsonValue* vs_json_value_init_null();
 struct VsJsonValue* vs_json_value_init_string(const char* str);
 
 /**
+ * 初始化一个json的值
+ */
+struct VsJsonValue* vs_json_value_init(struct VsJsonArray* array);
+
+/**
  * json的值转换成string
  */
 struct VsString* vs_json_value_to_string(struct VsJsonValue* value);
@@ -317,6 +327,15 @@ void vs_json_kv_destroy(struct VsJsonKv* kv);
  */
 struct VsJsonArray* vs_json_array_init(struct VsString* str);
 
+/**
+ * 初始化json数组
+ */
+struct VsJsonArray* vs_json_array_init(const char* str);
+
+/**
+ * 初始化json数组
+ */
+struct VsJsonArray* vs_json_array_init(long* array, long length);
 
 /**
  * 在json数组后面添加value

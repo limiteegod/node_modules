@@ -21,6 +21,9 @@ class Check:public node::ObjectWrap {
         //开奖号码
         struct VsJsonObject* drawMap;
 
+        //场次取消特征值
+        struct VsString* cancelFlag;
+
         static v8::Persistent<v8::Function> constructor;
         static v8::Handle<v8::Value> New(const v8::Arguments& args);
         static v8::Handle<v8::Value> SetDrawNumber(const v8::Arguments& args);

@@ -7,10 +7,13 @@ var drawNumber = {};
 
 var getDrawNumber = function(matchCode, cb)
 {
-    console.log(matchCode);
     if(matchCode == "201406135006")
     {
         cb(null, "0:0,1:2,-1");
+    }
+    else if(matchCode == "201406135003")
+    {
+        cb(null, "*");
     }
     else
     {
@@ -19,9 +22,9 @@ var getDrawNumber = function(matchCode, cb)
 }
 
 var start = new Date().getTime();
-for(var i = 0; i < 2; i++)
+for(var i = 0; i < 10000; i++)
 {
-    var number = '01|201406135003|1@3.550,0@1.99;01|201406135005|1@3.150,3@1.97;01|201406135006|1@3.150';
+    var number = '02|201406135003|1@3.550,0@1.99;02|201406135005|1@3.150,3@1.97;02|201406135006|0@3.150';
     var numberArray = number.split(';');
     var matches = [];
     for(var j = 0; j < numberArray.length; j++)
@@ -45,7 +48,7 @@ for(var i = 0; i < 2; i++)
     }, function(err){
         console.log(check.count({
             number:number,
-            bType:'31'
+            bType:'34'
         }));
     });
 }

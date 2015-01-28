@@ -6,6 +6,7 @@
 #include "VsString.h"
 #include "VsJson.h"
 #include "VsUtil.h"
+#include "VsJsonUtil.h"
 
 using namespace v8;
 
@@ -15,17 +16,20 @@ Check::Check()
 {
     this->initBunchMap();
 
-    struct VsString* jsonStr = vs_json_object_to_string(this->bunchMap);
+    /*struct VsString* jsonStr = vs_json_object_to_string(this->bunchMap);
     vs_string_print(jsonStr);
-    vs_string_destroy(jsonStr);
+    vs_string_destroy(jsonStr);*/
 
     this->drawMap = vs_json_object_init("{}");
+
+    this->cancelFlag = vs_string_init("*");
 }
 
 Check::~Check()
 {
     vs_json_object_destroy(this->bunchMap);
     vs_json_object_destroy(this->drawMap);
+    vs_string_destroy(this->cancelFlag);
 }
 
 void Check::initBunchMap()
@@ -170,7 +174,7 @@ struct VsJsonObject* Check::getNumberObj(struct VsString* number, struct VsStrin
     vs_json_object_set(numberObj, "data", dataArray);
     vs_json_object_set_string(numberObj, "betType", betType->pt);
 
-    vs_string_print(number);
+    //vs_string_print(number);
     struct VsStringList* list = vs_string_split(number, ';');
     for(int i = 0; i < list->length; i++)
     {
@@ -185,7 +189,7 @@ struct VsJsonObject* Check::getNumberObj(struct VsString* number, struct VsStrin
         vs_json_object_set_string(obj->objectValue, "matchCode", matchCode->pt);
 
         struct VsStringList* choiceList = vs_string_split(choice, ',');
-        struct VsJsonValue* choiceArray = vs_json_value_init("[]");
+        struct VsJsonValue* choiceObject = vs_json_value_init("{}");
         for(int j = 0; j < choiceList->length; j++)
         {
             struct VsString* str = vs_string_list_get(choiceList, j);
@@ -193,13 +197,10 @@ struct VsJsonObject* Check::getNumberObj(struct VsString* number, struct VsStrin
             struct VsString* option = vs_string_list_get(choiceOptionList, 0);
             struct VsString* odds = vs_string_list_get(choiceOptionList, 1);
 
-            struct VsJsonValue* choiceObj = vs_json_value_init("{}");
-            vs_json_object_set(choiceObj->objectValue, option->pt, odds->pt);
-            vs_json_array_set(choiceArray->arrayValue, j, choiceObj);
-
+            vs_json_object_set(choiceObject->objectValue, option->pt, odds->pt);
             vs_string_list_destroy(choiceOptionList);
         }
-        vs_json_object_set(obj->objectValue, "choice", choiceArray);
+        vs_json_object_set(obj->objectValue, "choice", choiceObject);
         vs_string_list_destroy(choiceList);
 
         vs_json_array_set(dataArray->arrayValue, i, obj);
@@ -235,39 +236,59 @@ Handle<Value> Check::SetDrawNumber(const Arguments& args)
     *(str->pt + str->length) = '\0';
 
     struct VsJsonValue* matchValue = vs_json_value_init("{}");
-
-    struct VsStringList* numList = vs_string_split(str, ',');
-    struct VsString* halfStr = vs_string_list_get(numList, 0);
-    struct VsStringList* halfStrList = vs_string_split(halfStr, ':');
-    struct VsString* endStr = vs_string_list_get(numList, 1);
-    struct VsStringList* endStrList = vs_string_split(endStr, ':');
-    struct VsString* rangStr = vs_string_list_get(numList, 2);
-
-    long rang = vs_util_str_to_long(rangStr);   //让球数
-    long hostEnd = vs_util_str_to_long(vs_string_list_get(endStrList, 0));   //主队进球数目
-    long guestEnd = vs_util_str_to_long(vs_string_list_get(endStrList, 1));   //客队进球数目
-    if(hostEnd > guestEnd)
+    if(vs_string_equal(str, self->cancelFlag))
     {
-        vs_json_object_set_string(matchValue->objectValue, "02", "3");
-    }
-    else if(hostEnd == guestEnd)
-    {
-        vs_json_object_set_string(matchValue->objectValue, "02", "1");
+        vs_json_object_set_string(matchValue->objectValue, "02", "*");
+        vs_json_object_set_string(matchValue->objectValue, "01", "*");
     }
     else
     {
-        vs_json_object_set_string(matchValue->objectValue, "02", "0");
+        struct VsStringList* numList = vs_string_split(str, ',');
+        struct VsString* halfStr = vs_string_list_get(numList, 0);
+        struct VsStringList* halfStrList = vs_string_split(halfStr, ':');
+        struct VsString* endStr = vs_string_list_get(numList, 1);
+        struct VsStringList* endStrList = vs_string_split(endStr, ':');
+        struct VsString* rangStr = vs_string_list_get(numList, 2);
+
+        long rang = vs_util_str_to_long(rangStr);   //让球数
+        long hostEnd = vs_util_str_to_long(vs_string_list_get(endStrList, 0));   //主队进球数目
+        long guestEnd = vs_util_str_to_long(vs_string_list_get(endStrList, 1));   //客队进球数目
+        //统计胜平负
+        if(hostEnd > guestEnd)
+        {
+            vs_json_object_set_string(matchValue->objectValue, "02", "3");
+        }
+        else if(hostEnd == guestEnd)
+        {
+            vs_json_object_set_string(matchValue->objectValue, "02", "1");
+        }
+        else
+        {
+            vs_json_object_set_string(matchValue->objectValue, "02", "0");
+        }
+        //统计让球胜平负
+        if(hostEnd + rang > guestEnd)
+        {
+            vs_json_object_set_string(matchValue->objectValue, "01", "3");
+        }
+        else if(hostEnd + rang == guestEnd)
+        {
+            vs_json_object_set_string(matchValue->objectValue, "01", "1");
+        }
+        else
+        {
+            vs_json_object_set_string(matchValue->objectValue, "01", "0");
+        }
+        vs_string_list_destroy(halfStrList);
+        vs_string_list_destroy(endStrList);
+        vs_string_list_destroy(numList);
     }
-    vs_string_print(str);
     vs_json_object_set(self->drawMap, codeStr, matchValue);
 
-    struct VsString* jsonStr = vs_json_object_to_string(self->drawMap);
+    /*struct VsString* jsonStr = vs_json_object_to_string(self->drawMap);
     vs_string_print(jsonStr);
-    vs_string_destroy(jsonStr);
+    vs_string_destroy(jsonStr);*/
 
-    vs_string_list_destroy(halfStrList);
-    vs_string_list_destroy(endStrList);
-    vs_string_list_destroy(numList);
     vs_string_destroy(codeStr);
     vs_string_destroy(str);
     return scope.Close(Undefined());
@@ -282,18 +303,97 @@ Handle<Value> Check::Count(const Arguments& args)
     Check *self = ObjectWrap::Unwrap<Check>(args.This());
     Local<Object> pObj = Local<Object>::Cast(args[0]);
     Handle<Array> array = Array::New();
+    Handle<Array> detailArray = Array::New();
 
+    long totalBonus = 0;    //ticket all bonus
     struct VsString* number = self->getNumber(pObj);
     struct VsString* betType = self->getBetType(pObj);
     struct VsJsonObject* numberObj = self->getNumberObj(number, betType);
 
-    struct VsString* jsonStr = vs_json_object_to_string(numberObj);
-    vs_string_print(jsonStr);
-    vs_string_destroy(jsonStr);
+    struct VsString* bunchFlag = vs_json_object_get(self->bunchMap, betType)->strValue;
+    struct VsJsonArray* matchArray = vs_json_object_get(numberObj, "data")->arrayValue;
+    long m = matchArray->length;
+    for(int i = 0; i < bunchFlag->length; i++)
+    {
+        char c = vs_string_char_at(bunchFlag, i);
+        if(c == '1')
+        {
+            long n = i + 1;
+            long level = n*10 + 1;  //奖级,21,31,41...
+            long count = 0; //注数
+            long bonus = 0; //这一级别的中奖金额
+            struct VsJsonArray* detail = vs_json_util_get_detail_mn(m, n);
+            //traverse the detail
+            for(int j = 0; j < detail->length; j++)
+            {
+                double totalMultiplier = 200.00;    //一注2元
+                long curCount = 1;
+                struct VsJsonArray* set = vs_json_array_get(detail, j)->arrayValue;
+                for(int l = 0; l < set->length; l++)
+                {
+                    long matchIndex = vs_json_array_get(set, l)->longValue;
 
+                    struct VsJsonObject* curMatch = vs_json_array_get(matchArray, matchIndex)->objectValue;
+                    struct VsString* matchCode = vs_json_object_get(curMatch, "matchCode")->strValue;
+                    struct VsString* playType = vs_json_object_get(curMatch, "playType")->strValue;
+                    struct VsJsonObject* choiceObject = vs_json_object_get(curMatch, "choice")->objectValue;
+
+                    struct VsJsonObject* drawOptions = vs_json_object_get(self->drawMap, matchCode)->objectValue;
+                    struct VsString* drawOption = vs_json_object_get(drawOptions, playType)->strValue;
+                    if(vs_string_equal(drawOption, self->cancelFlag))   //场次取消，有多少个选项，则为多少倍
+                    {
+                        totalMultiplier *= choiceObject->length;
+                        curCount *= choiceObject->length;
+                    }
+                    else
+                    {
+                        struct VsJsonValue* select = vs_json_object_get(choiceObject, drawOption);
+                        if(select == NULL)  //用户选择错误
+                        {
+                            totalMultiplier = 0;
+                            curCount = 0;
+                            break;
+                        }
+                        else    //选择正确
+                        {
+                            totalMultiplier *= select->doubleValue;
+                        }
+                    }
+                }
+                count += curCount;
+                bonus += totalMultiplier;
+                //printf("the multiple is:%lf.\n", totalMultiplier);
+            }
+            if(bonus > 0)   //中奖，生成奖级信息
+            {
+                totalBonus += bonus;
+
+                Handle<Object> obj = Object::New();
+                Local<String> bonusKey = String::NewSymbol("bonus");
+                Local<String> bonusBeforeTaxKey = String::NewSymbol("bonusBeforeTax");
+                Local<String> levelKey = String::NewSymbol("level");
+                Local<String> countKey = String::NewSymbol("count");
+
+                obj->Set(bonusKey, Number::New(bonus));
+                obj->Set(bonusBeforeTaxKey, Number::New(bonus));
+                obj->Set(levelKey, Number::New(level));
+                obj->Set(countKey, Number::New(count));
+
+                int len = detailArray->Length();
+                detailArray->Set(len, obj);
+            }
+            vs_json_array_destroy(detail);
+        }
+    }
     vs_string_destroy(betType);
     vs_string_destroy(number);
     vs_json_object_destroy(numberObj);
+
+    //生成总计信息
+    array->Set(String::NewSymbol("bonus"), Number::New(totalBonus));
+    array->Set(String::NewSymbol("bonusBeforeTax"), Number::New(totalBonus));
+    array->Set(String::NewSymbol("bonusDetail"), detailArray);
+
     return scope.Close(array);
 }
 
