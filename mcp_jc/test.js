@@ -3,6 +3,8 @@ var async = require('async');
 var jc = require('./build/Release/jc');
 var check = jc.check();
 
+var validate = require('./Validate.js');
+
 var drawNumber = {};
 
 var getDrawNumber = function(matchCode, cb)
@@ -22,7 +24,8 @@ var getDrawNumber = function(matchCode, cb)
 }
 
 var start = new Date().getTime();
-for(var i = 0; i < 10000; i++)
+/*
+for(var i = 0; i < 1; i++)
 {
     var number = '02|201406135003|1@3.550,0@1.99;02|201406135005|1@3.150,3@1.97;02|201406135006|0@3.150';
     var numberArray = number.split(';');
@@ -51,7 +54,22 @@ for(var i = 0; i < 10000; i++)
             bType:'34'
         }));
     });
-}
+}*/
+
+var order = {};
+var ticket = {
+    gameCode:'T51',
+    pType:'06',
+    bType:'34',
+    amount:4000,
+    multiple:1,
+    number:'02|201406135003|1@2.00,3@2.11;02|201406135005|1@3.150,3@1.97;02|201406135006|1@3.550,0@1.99'
+};
+validate.validate(order, ticket, function(err, data){
+    console.log(err);
+    console.log(data);
+});
+
 var end = new Date().getTime();
 console.log("执行耗时:" + (end - start) + "ms.");
 

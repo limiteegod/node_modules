@@ -12,6 +12,67 @@ var mathUtil = util.mathUtil;
 
 var Validate = function(){
     var self = this;
+
+    var bunchMap = {};
+    //所有的串关场次特征码。
+    bunchMap["11"] = "10000000";
+    bunchMap["21"] = "01000000";
+    bunchMap["31"] = "00100000";
+    bunchMap["41"] = "00010000";
+    bunchMap["51"] = "00001000";
+    bunchMap["61"] = "00000100";
+    bunchMap["71"] = "00000010";
+    bunchMap["81"] = "00000001";
+    bunchMap["23"] = "11000000";
+    bunchMap["36"] = "11000000";
+    bunchMap["37"] = "11100000";
+    bunchMap["410"] = "11000000";
+    bunchMap["414"] = "11100000";
+    bunchMap["415"] = "11110000";
+    bunchMap["515"] = "11000000";
+    bunchMap["525"] = "11100000";
+    bunchMap["530"] = "11110000";
+    bunchMap["531"] = "11111000";
+    bunchMap["621"] = "11000000";
+    bunchMap["641"] = "11100000";
+    bunchMap["656"] = "11110000";
+    bunchMap["662"] = "11111000";
+    bunchMap["663"] = "11111100";
+    bunchMap["7127"] = "11111110";
+    bunchMap["8255"] = "11111111";
+    bunchMap["33"] = "01000000";
+    bunchMap["34"] = "01100000";
+    bunchMap["46"] = "01000000";
+    bunchMap["411"] = "01110000";
+    bunchMap["510"] = "01000000";
+    bunchMap["520"] = "01100000";
+    bunchMap["526"] = "01111000";
+    bunchMap["615"] = "01000000";
+    bunchMap["635"] = "01100000";
+    bunchMap["650"] = "01110000";
+    bunchMap["657"] = "01111100";
+    bunchMap["7120"] = "01111110";
+    bunchMap["8247"] = "01111111";
+    bunchMap["44"] = "00100000";
+    bunchMap["45"] = "00110000";
+    bunchMap["516"] = "00111000";
+    bunchMap["620"] = "00100000";
+    bunchMap["642"] = "00111100";
+    bunchMap["55"] = "00010000";
+    bunchMap["56"] = "00011000";
+    bunchMap["622"] = "00011100";
+    bunchMap["735"] = "00010000";
+    bunchMap["870"] = "00010000";
+    bunchMap["66"] = "00001000";
+    bunchMap["67"] = "00001100";
+    bunchMap["721"] = "00001000";
+    bunchMap["856"] = "00001000";
+    bunchMap["77"] = "00000100";
+    bunchMap["78"] = "00000110";
+    bunchMap["828"] = "00000100";
+    bunchMap["88"] = "00000010";
+    bunchMap["89"] = "00000011";
+    self.bunchMap = bunchMap;
 };
 
 
@@ -19,7 +80,7 @@ Validate.prototype.validate = function(order, ticket, cb)
 {
     var self = this;
     var tickets = order.tickets;
-    var name = "validate" + ticket.pType + ticket.bType;
+    var name = "validate" + ticket.pType;
     if(self[name])
     {
         var number = ticket.number;
@@ -48,272 +109,135 @@ Validate.prototype.validate = function(order, ticket, cb)
             }
         });
     }
-    else
+    else    //不支持的玩法
     {
+        log.error("no method defined.");
         cb(ec.E2062);
     }
 }
 
 
 /**
- * 三不同 单选
  * @param order
  * @param ticket
  * @param cb
  */
-Validate.prototype.validate0100 = function(order, ticket, cb)
+Validate.prototype.validate01 = function(order, ticket, cb)
 {
     var self = this;
-    var number = ticket.number;
-    var items = number.split(";");
-    for(var i = 0 ; i < items.length; i++){
-        var reg = /^\d(,\d){2}$/;
-        if(!reg.test(items[i]))
-        {
-            cb(ec.E2066);
-            return;
-        }
-        var intArray = mathUtil.getIntArrayFromStrArray(items[i].split(','));
-        if(!mathUtil.isFromMinToMax(intArray)){
-            cb(ec.E2066);
-            return;
-        }
-        if(!mathUtil.isMinAndMaxBetween(intArray,1, 6)){
-            cb(ec.E2066);
-            return;
-        }
-    }
-    if(items.length >5){
-        cb(ec.E2071);
-        return;
-    }
-    cb(null, items.length);
+    self.getCount(order, ticket, cb);
 }
 
 /**
- * 二同单选
  * @param order
  * @param ticket
  * @param cb
  */
-Validate.prototype.validate0200 = function(order, ticket, cb)
+Validate.prototype.validate02 = function(order, ticket, cb)
 {
     var self = this;
+    self.getCount(order, ticket, cb);
+}
+
+/**
+ * @param order
+ * @param ticket
+ * @param cb
+ */
+Validate.prototype.validate03 = function(order, ticket, cb) {
+    var self = this;
+    self.getCount(order, ticket, cb);
+}
+
+/**
+ * @param order
+ * @param ticket
+ * @param cb
+ */
+Validate.prototype.validate04 = function(order, ticket, cb)
+{
+    var self = this;
+    self.getCount(order, ticket, cb);
+}
+
+/**
+ * @param order
+ * @param ticket
+ * @param cb
+ */
+Validate.prototype.validate05 = function(order, ticket, cb)
+{
+    var self = this;
+    self.getCount(order, ticket, cb);
+}
+
+/**
+ * @param order
+ * @param ticket
+ * @param cb
+ */
+Validate.prototype.validate06 = function(order, ticket, cb)
+{
+    var self = this;
+    self.getCount(order, ticket, cb);
+}
+
+/**
+ * 获得号码的注数
+ * @param order
+ * @param ticket
+ * @param cb
+ */
+Validate.prototype.getCount = function(order, ticket, cb)
+{
+    var self = this;
+    var bType = ticket.bType;
+    var bunchFlag = self.bunchMap[bType];
+    if(bunchFlag == undefined)
+    {
+        log.error("no flag defined.");
+        cb(ec.E2062);
+        return;
+    }
+    var m = parseInt(bType.substring(0, 1));
+    var n = parseInt(bType.substring(1));
     var number = ticket.number;
     var items = number.split(";");
-    var array = [112,113,114,115,116,122,223,224,225,226,133,233,334,335,336,144,244,344,445,446,155,255,355,455,556,166,266,366,466,566];
-    var count = 0;
-    for(var i = 0 ; i < items.length; i++){
-        var reg = /^\d(,\d){2}$/;
-        if(!reg.test(items[i]))
+    var choiceLengthArray = [];
+    for(var i = 0; i < items.length; i++)
+    {
+        var curMatch = items[i];
+        var reg = /^\d{2}\|\d{12,}\|\d{1,}(@\d{1,}\.\d{1,}){0,}(,\d{1,}(@\d{1,}\.\d{1,}){0,}){0,}$/;
+        if(!reg.test(curMatch))
         {
             cb(ec.E2066);
             return;
         }
-        var intArray = mathUtil.getIntArrayFromStrArray(items[i].split(','));
-        if(!mathUtil.isFromMinToMaxCanEqual(intArray)){
-            cb(ec.E2066);
-            return;
-        }
-        mathUtil.selectSort(intArray);
-        var temp = intArray[0]*100 + intArray[1]*10 + intArray[2];
-        for(var j = 0; j < array.length; j++ ){
-            if(temp == array[j]){
-                count ++;
-                break;
+        var curMatchDetailArray = curMatch.split("|");
+        var choice = curMatchDetailArray[2];
+        var length = choice.split(',').length;
+        choiceLengthArray.push(length);
+    }
+    var count = 0;
+    for(var i = 0; i < bunchFlag.length; i++)
+    {
+        var flag = bunchFlag.charAt(i);
+        if(flag == '1')
+        {
+            var dc = mathUtil.getDetailC(m, i + 1);
+            for(var j = 0; j < dc.length; j++)
+            {
+                var set = dc[j];
+                var curCount = 1;
+                for(var k = 0; k < set.length; k++)
+                {
+                    curCount *= choiceLengthArray[set[k]];
+                }
+                count += curCount;
             }
         }
     }
-    if(count != items.length){
-        cb(ec.E2066);
-        return;
-    }
-    if(items.length >5){
-        cb(ec.E2071);
-        return;
-    }
-    cb(null, items.length);
-}
-
-
-/**
- * 三同单选
- * @param order
- * @param ticket
- * @param cb
- */
-Validate.prototype.validate0300 = function(order, ticket, cb)
-{
-    var self = this;
-    var number = ticket.number;
-    var items = number.split(";");
-    var array = [111,222,333,444,555,666];
-    var count = 0;
-    for(var i = 0 ; i < items.length; i++){
-        var reg = /^\d(,\d){2}$/;
-        if(!reg.test(items[i]))
-        {
-            cb(ec.E2066);
-            return;
-        }
-        var intArray = mathUtil.getIntArrayFromStrArray(items[i].split(','));
-        var temp = intArray[0]*100 + intArray[1]*10 + intArray[2];
-        for(var j = 0; j < array.length; j++ ){
-            if(temp == array[j]){
-                count ++;
-                break;
-            }
-        }
-    }
-    if(count != items.length){
-        cb(ec.E2066);
-        return;
-    }
-    if(items.length >5){
-        cb(ec.E2071);
-        return;
-    }
-    cb(null, items.length);
-}
-
-/**
- * 合值
- * @param order
- * @param ticket
- * @param cb
- */
-Validate.prototype.validate0401 = function(order, ticket, cb)
-{
-    var self = this;
-    var number = ticket.number;
-    var items = number.split(",");
-    for(var i = 0 ; i < items.length; i++){
-        var reg = /^\d{1,2}$/;
-        if(!reg.test(items[i]))
-        {
-            cb(ec.E2066);
-            return;
-        }
-        var value = parseInt(items[i]);
-        if(value < 4 || value> 17 ) {
-            cb(ec.E2066);
-            return;
-        }
-    }
-    if(!mathUtil.isFromMinToMax(mathUtil.getIntArrayFromStrArray(items))){
-        cb(ec.E2066);
-        return;
-    }
-    cb(null, items.length);
-}
-
-
-/**
- * 二不同
- * @param order
- * @param ticket
- * @param cb
- */
-Validate.prototype.validate0501 = function(order, ticket, cb)
-{
-    var self = this;
-    var number = ticket.number;
-    var items = number.split(";");
-    var array = [12,13,14,15,16,23,24,25,26,34,35,36,45,46,56];
-    var count = 0;
-    for(var i = 0 ; i < items.length; i++){
-        var reg = /^\d{2}$/;
-        if(!reg.test(items[i]))
-        {
-            cb(ec.E2066);
-            return;
-        }
-        var value = parseInt(items[i]);
-        for(var j = 0; j < array.length; j++){
-            if(array[j] == value){
-                count++
-                break;
-            }
-        }
-    }
-    if(count != items.length){
-        cb(ec.E2066);
-        return;
-    }
-    if(items.length >5){
-        cb(ec.E2071);
-        return;
-    }
-    cb(null, items.length);
-}
-
-/**
- * 二同
- * @param order
- * @param ticket
- * @param cb
- */
-Validate.prototype.validate0601 = function(order, ticket, cb)
-{
-    var self = this;
-    var number = ticket.number;
-    var items = number.split(";");
-    var array = [11,22,33,44,55,66];
-    var count = 0;
-    for(var i = 0 ; i < items.length; i++){
-        var reg = /^\d{2}$/;
-        if(!reg.test(items[i]))
-        {
-            cb(ec.E2066);
-            return;
-        }
-        var value = parseInt(items[i]);
-        for(var j = 0; j < array.length; j++){
-            if(array[j] == value){
-                count++
-                break;
-            }
-        }
-    }
-    if(count != items.length){
-        cb(ec.E2066);
-        return;
-    }
-    cb(null, items.length);
-}
-
-/**
- * 三同通选
- * @param order
- * @param ticket
- * @param cb
- */
-Validate.prototype.validate0700 = function(order, ticket, cb)
-{
-    var self = this;
-    var number = ticket.number;
-    if(number != '111,222,333,444,555,666'){
-        cb(ec.E2066);
-        return;
-    }
-    cb(null, 1);
-}
-
-/**
- * 三连号通选
- * @param order
- * @param ticket
- * @param cb
- */
-Validate.prototype.validate0800 = function(order, ticket, cb)
-{
-    var self = this;
-    var number = ticket.number;
-    if(number != '123,234,345,456'){
-        cb(ec.E2066);
-        return;
-    }
-    cb(null, 1);
+    cb(null, count);
 }
 
 module.exports = new Validate();

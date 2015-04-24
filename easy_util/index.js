@@ -11,5 +11,6 @@ exports.dateUtil = dateUtil;
 exports.digestUtil = digestUtil;
 exports.osUtil = osUtil;
 exports.pageUtil = pageUtil;
+exports.assert = require("./Assert.js");
 
 module.exports = exports;
