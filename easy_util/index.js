@@ -12,5 +12,6 @@ exports.digestUtil = digestUtil;
 exports.osUtil = osUtil;
 exports.pageUtil = pageUtil;
 exports.assert = require("./Assert.js");
+exports.mathUtil = require('./MathUtil.js');
 
 module.exports = exports;
